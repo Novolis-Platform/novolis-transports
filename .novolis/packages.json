@@ -1,0 +1,14 @@
+{
+  "packages": {
+    "Novolis.Transports": {
+      "paths": [
+        "src/Novolis.Transports/**",
+        "tests/**",
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "global.json"
+      ],
+      "project": "src/Novolis.Transports/Novolis.Transports.csproj"
+    }
+  }
+}
