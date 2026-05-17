@@ -1,14 +1,28 @@
 {
   "packages": {
-    "Novolis.Transports": {
-      "paths": [
-        "src/Novolis.Transports/**",
-        "tests/**",
-        "Directory.Build.props",
-        "Directory.Packages.props",
-        "global.json"
-      ],
-      "project": "src/Novolis.Transports/Novolis.Transports.csproj"
+    "Novolis.Transports.Tcp.Server": {
+      "project": "src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj",
+      "paths": ["src/Novolis.Transports.Tcp.Server/**", "src/Novolis.Transports.Tcp.Cryptography/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Tcp.Client": {
+      "project": "src/Novolis.Transports.Tcp.Client/Novolis.Transports.Tcp.Client.csproj",
+      "paths": ["src/Novolis.Transports.Tcp.Client/**", "src/Novolis.Transports.Tcp.Cryptography/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Http.Abstractions": {
+      "project": "src/Novolis.Transports.Http.Abstractions/Novolis.Transports.Http.Abstractions.csproj",
+      "paths": ["src/Novolis.Transports.Http.Abstractions/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Http": {
+      "project": "src/Novolis.Transports.Http/Novolis.Transports.Http.csproj",
+      "paths": ["src/Novolis.Transports.Http/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Http.Authentication": {
+      "project": "src/Novolis.Transports.Http.Authentication/Novolis.Transports.Http.Authentication.csproj",
+      "paths": ["src/Novolis.Transports.Http.Authentication/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Http.Extensions": {
+      "project": "src/Novolis.Transports.Http.Extensions/Novolis.Transports.Http.Extensions.csproj",
+      "paths": ["src/Novolis.Transports.Http.Extensions/**", "Novolis.Transports.slnx"]
     }
   }
 }

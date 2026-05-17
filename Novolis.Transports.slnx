@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Novolis.Transports.Tcp.Cryptography/Novolis.Transports.Tcp.Cryptography.csproj" />
+    <Project Path="src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj" />
+    <Project Path="src/Novolis.Transports.Tcp.Client/Novolis.Transports.Tcp.Client.csproj" />
+    <Project Path="src/Novolis.Transports.Http.Abstractions/Novolis.Transports.Http.Abstractions.csproj" />
+    <Project Path="src/Novolis.Transports.Http.Authentication/Novolis.Transports.Http.Authentication.csproj" />
+    <Project Path="src/Novolis.Transports.Http.Extensions/Novolis.Transports.Http.Extensions.csproj" />
+    <Project Path="src/Novolis.Transports.Http/Novolis.Transports.Http.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Novolis.Transports.Tcp.Tests/Novolis.Transports.Tcp.Tests.csproj" />
+    <Project Path="tests/Novolis.Transports.Http.Tests/Novolis.Transports.Http.Tests.csproj" />
+  </Folder>
+</Solution>
