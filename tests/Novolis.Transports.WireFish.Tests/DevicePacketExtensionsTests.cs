@@ -1,5 +1,4 @@
 using System.Net;
-using FluentAssertions;
 using Novolis.Transports.WireFish;
 using PacketDotNet;
 using PacketDotNet.Utils;
@@ -10,7 +9,7 @@ namespace Novolis.Transports.WireFish.Tests;
 public class DevicePacketExtensionsTests
 {
     [Test]
-    public void GetSourceIPAddress_reads_ipv4_header()
+    public async Task GetSourceIPAddress_reads_ipv4_header()
     {
         var bytes = new byte[]
         {
@@ -25,8 +24,8 @@ public class DevicePacketExtensionsTests
         var packet = Packet.ParsePacket(LinkLayers.Ethernet, bytes);
         var devicePacket = new DevicePacket(null!, packet, DateTime.UtcNow);
 
-        devicePacket.GetSourceIPAddress().Should().Be(IPAddress.Parse("192.168.0.1"));
-        devicePacket.GetDestinationIPAddress().Should().Be(IPAddress.Parse("192.168.0.2"));
-        devicePacket.IsTcp().Should().BeTrue();
+        await Assert.That(devicePacket.GetSourceIPAddress()).IsEqualTo(IPAddress.Parse("192.168.0.1"));
+        await Assert.That(devicePacket.GetDestinationIPAddress()).IsEqualTo(IPAddress.Parse("192.168.0.2"));
+        await Assert.That(devicePacket.IsTcp()).IsTrue();
     }
 }
