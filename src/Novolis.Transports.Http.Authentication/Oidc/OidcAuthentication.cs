@@ -5,9 +5,9 @@ namespace Novolis.Transports.Http.Authentication.Oidc;
 
 public class OidcAuthentication : IHttpAuthentication
 {
-    private readonly IOicdTokenProvider _tokenProvider;
+    private readonly IOidcTokenProvider _tokenProvider;
 
-    public OidcAuthentication(IOicdTokenProvider tokenProvider)
+    public OidcAuthentication(IOidcTokenProvider tokenProvider)
     {
         _tokenProvider = tokenProvider;
     }

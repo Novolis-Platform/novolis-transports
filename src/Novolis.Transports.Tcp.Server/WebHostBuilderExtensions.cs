@@ -13,7 +13,7 @@ public static class WebHostBuilderExtensions
         builder.ConfigureServices(services =>
         {
             services.AddTransient<IConnectionHandler, THandler>();
-            services.AddAdvancedEncryption();
+            services.AddTcpPayloadEncryption();
         });
 
         builder.ConfigureKestrel(options =>

@@ -19,7 +19,7 @@ public class OidcAuthenticationTests
         await Assert.That(request.Headers.Authorization.Parameter).IsEqualTo("my.jwt.token");
     }
 
-    private sealed class FixedTokenProvider(string token) : IOicdTokenProvider
+    private sealed class FixedTokenProvider(string token) : IOidcTokenProvider
     {
         public Task<string> GetTokenAsync(CancellationToken cancellationToken) => Task.FromResult(token);
     }

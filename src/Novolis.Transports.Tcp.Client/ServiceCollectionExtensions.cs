@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
     {
         services.Configure(configure);
         services.AddSingleton<ITcpClient, TcpClient>();
-        services.AddAdvancedEncryption();
+        services.AddTcpPayloadEncryption();
         return services;
     }
     
@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddTcpClient(this IServiceCollection services)
     {
         services.AddSingleton<ITcpClient, TcpClient>();
-        services.AddAdvancedEncryption();
+        services.AddTcpPayloadEncryption();
         return services;
     }
 }

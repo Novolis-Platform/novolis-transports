@@ -9,12 +9,12 @@ namespace Novolis.Transports.Http.Tests;
 public class ServiceCollectionExtensionsTests
 {
     [Test]
-    public async Task AddFrankHttp_RegistersFactoryAndTransientRestClient()
+    public async Task AddNovolisHttp_RegistersFactoryAndTransientRestClient()
     {
         var handler = new StubHttpMessageHandler();
         var services = new ServiceCollection();
         services.ConfigureTestHttpHandler(handler);
-        services.AddFrankHttp();
+        services.AddNovolisHttp();
 
         await using var provider = services.BuildServiceProvider();
         var factory = provider.GetRequiredService<IRestClientFactory>();
@@ -26,12 +26,12 @@ public class ServiceCollectionExtensionsTests
     }
 
     [Test]
-    public async Task AddFrankHttp_WithEnricherAction_RegistersEnricher()
+    public async Task AddNovolisHttp_WithEnricherAction_RegistersEnricher()
     {
         var handler = new StubHttpMessageHandler();
         var services = new ServiceCollection();
         services.ConfigureTestHttpHandler(handler);
-        services.AddFrankHttp(b => b.AddEnricher<HeaderEnricher>());
+        services.AddNovolisHttp(b => b.AddEnricher<HeaderEnricher>());
 
         await using var provider = services.BuildServiceProvider();
         var client = provider.GetRequiredService<IRestClient>();
@@ -41,12 +41,12 @@ public class ServiceCollectionExtensionsTests
     }
 
     [Test]
-    public async Task AddFrankHttp_WithAuthenticationAction_RegistersAuthentication()
+    public async Task AddNovolisHttp_WithAuthenticationAction_RegistersAuthentication()
     {
         var handler = new StubHttpMessageHandler();
         var services = new ServiceCollection();
         services.ConfigureTestHttpHandler(handler);
-        services.AddFrankHttp(b => b.AddAuthentication<MarkerAuth>());
+        services.AddNovolisHttp(b => b.AddAuthentication<MarkerAuth>());
 
         await using var provider = services.BuildServiceProvider();
         var client = provider.GetRequiredService<IRestClient>();
@@ -56,12 +56,12 @@ public class ServiceCollectionExtensionsTests
     }
 
     [Test]
-    public async Task AddFrankHttp_WithBothConfigureActions_AppliesAuthenticationAndEnrichers()
+    public async Task AddNovolisHttp_WithBothConfigureActions_AppliesAuthenticationAndEnrichers()
     {
         var handler = new StubHttpMessageHandler();
         var services = new ServiceCollection();
         services.ConfigureTestHttpHandler(handler);
-        services.AddFrankHttp(
+        services.AddNovolisHttp(
             e => e.AddEnricher<HeaderEnricher>(),
             a => a.AddAuthentication<MarkerAuth>());
 
@@ -75,10 +75,10 @@ public class ServiceCollectionExtensionsTests
     }
 
     [Test]
-    public async Task AddFrankHttpAuthentication_RegistersConcreteAuthentication()
+    public async Task AddNovolisHttpAuthentication_RegistersConcreteAuthentication()
     {
         var services = new ServiceCollection();
-        services.AddFrankHttpAuthentication<MarkerAuth>();
+        services.AddNovolisHttpAuthentication<MarkerAuth>();
 
         await using var provider = services.BuildServiceProvider();
         var auth = provider.GetRequiredService<IHttpAuthentication>();
@@ -87,10 +87,10 @@ public class ServiceCollectionExtensionsTests
     }
 
     [Test]
-    public async Task AddFrankHttpRequestEnricher_RegistersConcreteEnricher()
+    public async Task AddNovolisHttpRequestEnricher_RegistersConcreteEnricher()
     {
         var services = new ServiceCollection();
-        services.AddFrankHttpRequestEnricher<HeaderEnricher>();
+        services.AddNovolisHttpRequestEnricher<HeaderEnricher>();
 
         await using var provider = services.BuildServiceProvider();
         var enricher = provider.GetRequiredService<IRequestEnricher>();

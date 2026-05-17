@@ -16,7 +16,7 @@ public static class TcpServerHostBuilderExtensions
             webBuilder.ConfigureServices(services =>
             {
                 services.AddTransient<IConnectionHandler, THandler>();
-                services.AddAdvancedEncryption();
+                services.AddTcpPayloadEncryption();
             });
 
             webBuilder.ConfigureKestrel(serverOptions =>

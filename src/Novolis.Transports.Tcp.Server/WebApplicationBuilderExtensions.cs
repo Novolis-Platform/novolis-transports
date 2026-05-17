@@ -13,7 +13,7 @@ public static class WebApplicationBuilderExtensions
     {
         // Add services
         builder.Services.AddTransient<IConnectionHandler, THandler>();
-        builder.Services.AddAdvancedEncryption();
+        builder.Services.AddTcpPayloadEncryption();
 
         // Configure Kestrel
         builder.WebHost.UseKestrelCore();

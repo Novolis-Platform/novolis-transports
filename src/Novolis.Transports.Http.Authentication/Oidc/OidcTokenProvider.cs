@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Novolis.Transports.Http.Authentication.Oidc;
 
-public class OidcTokenProvider : IOicdTokenProvider
+public class OidcTokenProvider : IOidcTokenProvider
 {
     private readonly HttpClient _httpClient;
     private readonly IMemoryCache _cache;

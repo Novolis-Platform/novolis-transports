@@ -23,6 +23,10 @@
     "Novolis.Transports.Http.Extensions": {
       "project": "src/Novolis.Transports.Http.Extensions/Novolis.Transports.Http.Extensions.csproj",
       "paths": ["src/Novolis.Transports.Http.Extensions/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.WireFish": {
+      "project": "src/Novolis.Transports.WireFish/Novolis.Transports.WireFish.csproj",
+      "paths": ["src/Novolis.Transports.WireFish/**", "Novolis.Transports.slnx"]
     }
   }
 }

@@ -1,6 +1,4 @@
 namespace Novolis.Transports.Http.Authentication.Oidc;
 
-public interface IOicdTokenProvider
-{
-    Task<string> GetTokenAsync(CancellationToken cancellationToken);
-}
+[Obsolete("Use IOidcTokenProvider. This misspelled name will be removed in a future release.")]
+public interface IOicdTokenProvider : IOidcTokenProvider;
