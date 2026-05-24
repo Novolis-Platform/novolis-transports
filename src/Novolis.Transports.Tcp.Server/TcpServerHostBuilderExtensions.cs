@@ -6,8 +6,14 @@ using Microsoft.Extensions.Hosting;
 
 namespace Novolis.Transports.Tcp.Server;
 
+/// <summary>Configures Kestrel to accept raw TCP connections.</summary>
 public static class TcpServerHostBuilderExtensions
 {
+    /// <summary>Registers <typeparamref name="THandler"/> and listens on <paramref name="port"/>.</summary>
+    /// <typeparam name="THandler">Per-connection handler.</typeparam>
+    /// <param name="hostBuilder">Host builder.</param>
+    /// <param name="port">Listen port.</param>
+    /// <returns><paramref name="hostBuilder"/> for chaining.</returns>
     public static IHostBuilder UseTcpConnectionHandler<THandler>(this IHostBuilder hostBuilder, int port)
         where THandler : class, IConnectionHandler
     {

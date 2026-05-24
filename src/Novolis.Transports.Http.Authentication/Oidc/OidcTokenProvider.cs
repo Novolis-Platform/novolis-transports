@@ -5,14 +5,19 @@ using Microsoft.Extensions.Options;
 
 namespace Novolis.Transports.Http.Authentication.Oidc;
 
+/// <summary>Client-credentials OIDC token provider with in-memory caching.</summary>
 public class OidcTokenProvider : IOidcTokenProvider
 {
     private readonly HttpClient _httpClient;
     private readonly IMemoryCache _cache;
     private readonly IOptions<OidcAuthenticationConfiguration> _options;
 
-    private string _tokenKey => $"oidc-token";
+    private string _tokenKey => "oidc-token";
 
+    /// <summary>Creates a token provider.</summary>
+    /// <param name="httpClient">HTTP client for the token endpoint.</param>
+    /// <param name="options">OIDC configuration.</param>
+    /// <param name="cache">Memory cache for tokens.</param>
     public OidcTokenProvider(HttpClient httpClient, IOptions<OidcAuthenticationConfiguration> options, IMemoryCache cache)
     {
         _httpClient = httpClient;
@@ -20,6 +25,7 @@ public class OidcTokenProvider : IOidcTokenProvider
         _cache = cache;
     }
 
+    /// <inheritdoc />
     public async Task<string> GetTokenAsync(CancellationToken cancellationToken)
     {
         if (_cache.TryGetValue<string>(_tokenKey, out var token) && token is not null)

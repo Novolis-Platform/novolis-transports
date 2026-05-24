@@ -1,19 +1,18 @@
 namespace Novolis.Transports.Http.Abstractions;
 
+/// <summary>Creates <see cref="IRestClient"/> instances with optional authentication and enricher sets.</summary>
 public interface IRestClientFactory
 {
     /// <summary>
-    /// Create a new instance of <see cref="IRestClient"/>
+    /// Creates a client using the default DI-registered enrichers and authentications, or a vanilla client.
     /// </summary>
-    /// <param name="vanilla">Vanilla mode will not use any enrichers or authentications</param>
-    /// <returns>A new instance of <see cref="IRestClient"/></returns>
+    /// <param name="vanilla">When <see langword="true"/>, skips enrichers and authentications.</param>
+    /// <returns>A new <see cref="IRestClient"/>.</returns>
     IRestClient CreateClient(bool vanilla = false);
-    
-    /// <summary>
-    /// Create a new instance of <see cref="IRestClient"/>
-    /// </summary>
-    /// <param name="enricherCollection"></param>
-    /// <param name="authentications"></param>
-    /// <returns>A new instance of <see cref="IRestClient"/></returns>
+
+    /// <summary>Creates a client with explicit enricher and authentication collections.</summary>
+    /// <param name="enricherCollection">Request enrichers to apply.</param>
+    /// <param name="authentications">Authentication handlers to apply.</param>
+    /// <returns>A new <see cref="IRestClient"/>.</returns>
     IRestClient CreateClient(IEnumerable<IRequestEnricher> enricherCollection, IEnumerable<IHttpAuthentication> authentications);
 }

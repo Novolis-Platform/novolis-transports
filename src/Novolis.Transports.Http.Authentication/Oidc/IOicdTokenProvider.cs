@@ -1,4 +1,5 @@
 namespace Novolis.Transports.Http.Authentication.Oidc;
 
-[Obsolete("Use IOidcTokenProvider. This misspelled name will be removed in a future release.")]
+/// <inheritdoc cref="IOidcTokenProvider"/>
+[Obsolete("Typo alias for IOidcTokenProvider. Use IOidcTokenProvider instead.")]
 public interface IOicdTokenProvider : IOidcTokenProvider;

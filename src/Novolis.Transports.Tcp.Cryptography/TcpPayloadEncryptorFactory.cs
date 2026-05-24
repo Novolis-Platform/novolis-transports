@@ -2,8 +2,10 @@ using System.Security.Cryptography;
 
 namespace Novolis.Transports.Tcp.Cryptography;
 
+/// <inheritdoc cref="ITcpPayloadEncryptorFactory"/>
 public class TcpPayloadEncryptorFactory : ITcpPayloadEncryptorFactory
 {
+    /// <inheritdoc />
     public Aes Create(AesKey aesKey)
     {
         var aes = Aes.Create();

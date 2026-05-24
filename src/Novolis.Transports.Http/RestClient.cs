@@ -2,6 +2,10 @@ using Novolis.Transports.Http.Abstractions;
 
 namespace Novolis.Transports.Http;
 
+/// <summary>
+/// Default <see cref="IRestClient"/> that applies all registered <see cref="IHttpAuthentication"/>
+/// and <see cref="IRequestEnricher"/> instances before delegating to an <see cref="HttpClient"/>.
+/// </summary>
 public class RestClient(HttpClient httpClient, IEnumerable<IHttpAuthentication> authentications, IEnumerable<IRequestEnricher> enrichers) : IRestClient
 {
     /// <inheritdoc />

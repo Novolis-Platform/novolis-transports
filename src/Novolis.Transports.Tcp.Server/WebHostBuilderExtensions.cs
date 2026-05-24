@@ -5,8 +5,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Novolis.Transports.Tcp.Server;
 
+/// <summary>Registers TCP connection handling on an <see cref="IWebHostBuilder"/>.</summary>
 public static class WebHostBuilderExtensions
 {
+    /// <summary>Configures Kestrel to listen on <paramref name="port"/> and use <typeparamref name="THandler"/>.</summary>
+    /// <typeparam name="THandler">Per-connection handler.</typeparam>
+    /// <param name="builder">Web host builder.</param>
+    /// <param name="port">Listen port.</param>
+    /// <returns><paramref name="builder"/> for chaining.</returns>
     public static IWebHostBuilder UseTcpConnectionHandler<THandler>(this IWebHostBuilder builder, int port)
         where THandler : class, IConnectionHandler
     {
