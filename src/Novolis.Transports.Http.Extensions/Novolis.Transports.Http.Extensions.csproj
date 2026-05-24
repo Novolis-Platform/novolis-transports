@@ -1,1 +1,2 @@
-<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><PackageId>Novolis.Transports.Http.Extensions</PackageId><Version>0.1.0-preview.1</Version><IsPackable>true</IsPackable></PropertyGroup><ItemGroup><ProjectReference Include="..\Novolis.Transports.Http.Abstractions\Novolis.Transports.Http.Abstractions.csproj" /></ItemGroup></Project>
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><PackageId>Novolis.Transports.Http.Extensions</PackageId>
+<IsPackable>true</IsPackable></PropertyGroup><ItemGroup><ProjectReference Include="..\Novolis.Transports.Http.Abstractions\Novolis.Transports.Http.Abstractions.csproj" /></ItemGroup></Project>
