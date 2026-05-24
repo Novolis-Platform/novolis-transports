@@ -17,5 +17,6 @@
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.5" />
     <PackageVersion Include="SharpPcap" Version="6.3.0" />
+      <PackageVersion Include="Novolis.Messaging.Channels" Version="*" />
   </ItemGroup>
 </Project>

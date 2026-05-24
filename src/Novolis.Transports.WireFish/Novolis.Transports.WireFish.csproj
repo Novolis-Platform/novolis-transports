@@ -10,7 +10,8 @@
     <RepositoryUrl>https://github.com/Novolis-Platform/novolis-transports</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\novolis-messaging\src\Novolis.Messaging.Channels\Novolis.Messaging.Channels.csproj" />
+    <PackageReference Include="Novolis.Messaging.Channels" />
+    
     <PackageReference Include="Bitvantage.Ethernet.OuiDatabase" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
