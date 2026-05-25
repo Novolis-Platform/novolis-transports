@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Novolis.Transports.Tcp.Abstractions</PackageId>
+    <IsPackable>true</IsPackable>
+    <Description>TCP connection middleware pipeline and in-memory transport helpers.</Description>
+  </PropertyGroup>
+</Project>

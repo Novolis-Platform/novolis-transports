@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Novolis.Transports.Tcp.Abstractions/Novolis.Transports.Tcp.Abstractions.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Cryptography/Novolis.Transports.Tcp.Cryptography.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Client/Novolis.Transports.Tcp.Client.csproj" />

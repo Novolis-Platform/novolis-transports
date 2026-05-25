@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><PackageId>Novolis.Transports.Tcp.Server</PackageId>
 <IsPackable>true</IsPackable></PropertyGroup>
-  <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /><ProjectReference Include="..\Novolis.Transports.Tcp.Cryptography\Novolis.Transports.Tcp.Cryptography.csproj" /></ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\Novolis.Transports.Tcp.Abstractions\Novolis.Transports.Tcp.Abstractions.csproj" />
+    <ProjectReference Include="..\Novolis.Transports.Tcp.Cryptography\Novolis.Transports.Tcp.Cryptography.csproj" />
+  </ItemGroup>
 </Project>

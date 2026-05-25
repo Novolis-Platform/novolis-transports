@@ -1,17 +1,24 @@
 using Microsoft.AspNetCore.Connections;
 using Microsoft.Extensions.Logging;
+using Novolis.Transports.Tcp.Abstractions;
 
 namespace Novolis.Transports.Tcp.Server;
 
 internal class TcpConnectionHandler : ConnectionHandler
 {
 	private readonly ILogger<TcpConnectionHandler> _logger;
-	private readonly IConnectionHandler _connectionHandler;
+	private readonly TcpConnectionRequestDelegate _pipeline;
 
-	public TcpConnectionHandler(ILogger<TcpConnectionHandler> logger, IConnectionHandler connectionHandler)
+	public TcpConnectionHandler(
+		ILogger<TcpConnectionHandler> logger,
+		IConnectionHandler connectionHandler,
+		IEnumerable<ITcpConnectionMiddleware>? middlewares = null)
 	{
 		_logger = logger;
-		_connectionHandler = connectionHandler;
+		ArgumentNullException.ThrowIfNull(connectionHandler);
+		_pipeline = TcpConnectionPipeline.Build(
+			input => new ValueTask<ReadOnlyMemory<byte>>(connectionHandler.HandleAsync(input)),
+			middlewares);
 	}
 
 	public override async Task OnConnectedAsync(ConnectionContext connection)
@@ -26,7 +33,7 @@ internal class TcpConnectionHandler : ConnectionHandler
 			foreach (var segment in buffer)
 			{
 				if (segment.IsEmpty) continue;
-				var responseBytes = await _connectionHandler.HandleAsync(segment);
+				var responseBytes = await _pipeline(segment);
 				await connection.Transport.Output.WriteAsync(responseBytes);
 			}
 
