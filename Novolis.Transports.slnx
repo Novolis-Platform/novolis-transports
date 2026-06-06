@@ -4,6 +4,7 @@
     <Project Path="src/Novolis.Transports.Tcp.Cryptography/Novolis.Transports.Tcp.Cryptography.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Client/Novolis.Transports.Tcp.Client.csproj" />
+    <Project Path="src/Novolis.Transports.LocalIpc/Novolis.Transports.LocalIpc.csproj" />
     <Project Path="src/Novolis.Transports.Http.Abstractions/Novolis.Transports.Http.Abstractions.csproj" />
     <Project Path="src/Novolis.Transports.Http.Authentication/Novolis.Transports.Http.Authentication.csproj" />
     <Project Path="src/Novolis.Transports.Http.Extensions/Novolis.Transports.Http.Extensions.csproj" />
