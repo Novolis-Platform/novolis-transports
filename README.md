@@ -33,8 +33,11 @@ TCP and HTTP client libraries for the Novolis platform.
 | `Novolis.Transports.Http.Authentication` | Basic, API key, and OIDC client auth |
 | `Novolis.Transports.Http.Extensions` | REST convenience extensions |
 | `Novolis.Transports.WireFish` | Live packet capture (SharpPcap) via `Novolis.Messaging.Channels` |
+| `Novolis.Transports.LocalIpc` | Framed local IPC over named pipes and Unix domain sockets |
 
 `Novolis.Transports.Tcp.Cryptography` provides internal TCP payload AES helpers (`AddTcpPayloadEncryption`).
+
+`Novolis.Transports.LocalIpc` is the reusable transport layer used by the live audio host/client stack. It is intentionally domain-agnostic so other Novolis apps can reuse the same framed request/response and event streaming model.
 
 ## Install
 

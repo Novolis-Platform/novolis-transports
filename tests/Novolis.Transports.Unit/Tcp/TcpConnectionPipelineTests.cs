@@ -23,8 +23,8 @@ public sealed class TcpConnectionPipelineTests
             new byte[] { 9, 8, 7 },
             [outer, inner]);
 
-        await Assert.That(response.ToArray()).IsEqualTo(new byte[] { 9, 8, 7 });
-        await Assert.That(observed).IsEqualTo(new[] { "outer-in", "inner-in", "terminal", "inner-out", "outer-out" });
+        await Assert.That(response.ToArray()).IsEquivalentTo(new byte[] { 9, 8, 7 });
+        await Assert.That(observed).IsEquivalentTo(new[] { "outer-in", "inner-in", "terminal", "inner-out", "outer-out" });
     }
 
     private sealed class RecordingMiddleware(string name, List<string> trace) : ITcpConnectionMiddleware

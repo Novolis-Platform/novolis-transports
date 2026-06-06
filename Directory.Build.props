@@ -28,6 +28,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  <PropertyGroup Condition="$(MSBuildProjectDirectory.Contains('\tests\')) Or $(MSBuildProjectDirectory.Contains('/tests/'))">
+    <IsTestProject Condition="'$(IsTestProject)' == ''">true</IsTestProject>
+    <IsTestingPlatformApplication>true</IsTestingPlatformApplication>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
   <Import Project="$(MSBuildThisFileDirectory)..\novolis-governance\build\Novolis.LocalPack.props"
           Condition="Exists('$(MSBuildThisFileDirectory)..\novolis-governance\build\Novolis.LocalPack.props')" />
   <Import Project="$(MSBuildThisFileDirectory)..\novolis-governance\build\Novolis.GitHubPackages.props"

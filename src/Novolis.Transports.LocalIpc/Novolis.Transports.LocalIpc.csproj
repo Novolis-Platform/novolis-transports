@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Novolis.Transports.LocalIpc</PackageId>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Description>Local IPC transport for typed request/response and event streams over named pipes or Unix domain sockets.</Description>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+</Project>
