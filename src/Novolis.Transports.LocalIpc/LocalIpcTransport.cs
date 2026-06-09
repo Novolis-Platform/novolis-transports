@@ -64,7 +64,7 @@ public static class LocalIpcTransport
             var server = new NamedPipeServerStream(
                 _endpoint.Address,
                 PipeDirection.InOut,
-                1,
+                NamedPipeServerStream.MaxAllowedServerInstances,
                 PipeTransmissionMode.Byte,
                 PipeOptions.Asynchronous);
 
