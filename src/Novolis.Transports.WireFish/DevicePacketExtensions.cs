@@ -181,6 +181,34 @@ public static class DevicePacketExtensions
         return devicePacket.Packet.ToString(StringOutputType.VerboseColored);
     }
 
+    /// <summary>One-line Info column text; see <see cref="PacketPresentation.FormatInfoLine"/>.</summary>
+    public static string FormatInfoLine(this DevicePacket devicePacket) =>
+        PacketPresentation.FormatInfoLine(devicePacket);
+
+    /// <summary>Protocol name for list display; see <see cref="PacketPresentation.GetProtocolName"/>.</summary>
+    public static string GetProtocolName(this DevicePacket devicePacket) =>
+        PacketPresentation.GetProtocolName(devicePacket);
+
+    /// <summary>Source address for list display; see <see cref="PacketPresentation.GetSourceDisplay"/>.</summary>
+    public static string GetSourceDisplay(this DevicePacket devicePacket) =>
+        PacketPresentation.GetSourceDisplay(devicePacket);
+
+    /// <summary>Destination address for list display; see <see cref="PacketPresentation.GetDestinationDisplay"/>.</summary>
+    public static string GetDestinationDisplay(this DevicePacket devicePacket) =>
+        PacketPresentation.GetDestinationDisplay(devicePacket);
+
+    /// <summary>Raw frame bytes; see <see cref="PacketPresentation.GetRawBytes"/>.</summary>
+    public static byte[] GetRawBytes(this DevicePacket devicePacket) =>
+        PacketPresentation.GetRawBytes(devicePacket);
+
+    /// <summary>Link-layer type as int; see <see cref="PacketPresentation.GetLinkLayerType"/>.</summary>
+    public static int GetLinkLayerType(this DevicePacket devicePacket) =>
+        PacketPresentation.GetLinkLayerType(devicePacket);
+
+    /// <summary>Protocol-detail tree; see <see cref="PacketPresentation.BuildDetailTree(DevicePacket)"/>.</summary>
+    public static PacketDetailNode BuildDetailTree(this DevicePacket devicePacket) =>
+        PacketPresentation.BuildDetailTree(devicePacket);
+
     /// <summary>
     /// Gets the length of the packet in bytes.
     /// </summary>

@@ -2,6 +2,8 @@
   <PropertyGroup>
     <PackageId>Novolis.Transports.WireFish</PackageId>
 <IsPackable>true</IsPackable>
+    <!-- ProjectRef consumers need SharpPcap/PacketDotNet beside this assembly (library CopyLocal is off by default). -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Description>
       Live network capture via SharpPcap, routed through Novolis.Messaging.Channels to IPacketHandler implementations.
     </Description>
