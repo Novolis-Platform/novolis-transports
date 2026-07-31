@@ -30,14 +30,12 @@ internal sealed class PacketCaptureService(
             throw new InvalidOperationException(message);
         }
 
+        Exception? lastOpenFailure = null;
         foreach (var device in devices)
         {
             try
             {
-                if (_options.PromiscuousMode)
-                    device.Open(DeviceModes.Promiscuous);
-                else
-                    device.Open();
+                OpenDevice(device);
                 if (!string.IsNullOrWhiteSpace(_options.BpfFilter))
                     device.Filter = _options.BpfFilter;
 
@@ -51,10 +49,19 @@ internal sealed class PacketCaptureService(
             }
             catch (Exception ex)
             {
+                lastOpenFailure = ex;
                 logger.LogError(ex, "Failed to start capture on device {Device}", device.Description);
-                if (!_options.AllowNoCaptureDevices)
-                    throw;
+                TryClose(device);
             }
+        }
+
+        if (_openedDevices.Count == 0)
+        {
+            var detail = lastOpenFailure?.Message ?? "unknown error";
+            throw new InvalidOperationException(
+                $"Failed to open any capture device ({devices.Count} matched). Last error: {detail}. " +
+                "On Windows, ensure the Npcap service is running (Start-Service npcap as Administrator).",
+                lastOpenFailure);
         }
 
         return Task.CompletedTask;
@@ -76,6 +83,40 @@ internal sealed class PacketCaptureService(
 
         _openedDevices.Clear();
         return Task.CompletedTask;
+    }
+
+    private void OpenDevice(LibPcapLiveDevice device)
+    {
+        if (_options.PromiscuousMode)
+        {
+            try
+            {
+                device.Open(DeviceModes.Promiscuous);
+                return;
+            }
+            catch (PcapException ex)
+            {
+                logger.LogWarning(
+                    ex,
+                    "Promiscuous open failed for {Device}; retrying without promiscuous mode",
+                    device.Description);
+            }
+        }
+
+        device.Open();
+    }
+
+    private static void TryClose(LibPcapLiveDevice device)
+    {
+        try
+        {
+            if (device.Opened)
+                device.Close();
+        }
+        catch
+        {
+            // ignored — best-effort cleanup after a failed open
+        }
     }
 
     private IEnumerable<LibPcapLiveDevice> SelectDevices()

@@ -38,6 +38,21 @@ public class ServiceCollectionExtensionsTests
         await Assert.That(options.BpfFilter).IsEqualTo("tcp port 443");
     }
 
+    [Test]
+    public async Task AddPacketHandler_reuses_pre_registered_handler_instance()
+    {
+        var services = new ServiceCollection();
+        var handler = new NoOpPacketHandler();
+        services.AddSingleton(handler);
+        services.AddNovolisWireFish(builder => builder.AddPacketHandler<NoOpPacketHandler>());
+
+        var provider = services.BuildServiceProvider();
+        var resolved = provider.GetServices<IPacketHandler>().ToList();
+
+        await Assert.That(resolved.Count).IsEqualTo(1);
+        await Assert.That(ReferenceEquals(resolved[0], handler)).IsTrue();
+    }
+
     private sealed class NoOpPacketHandler : IPacketHandler
     {
         public bool CanHandle(DevicePacket packet) => false;

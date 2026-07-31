@@ -15,6 +15,9 @@ public class WireFishOptions
     /// <summary>Whether adapters are opened in promiscuous mode.</summary>
     public bool PromiscuousMode { get; set; } = true;
 
-    /// <summary>When no capture devices are available, log a warning and skip capture instead of failing startup.</summary>
+    /// <summary>
+    /// When no capture devices are available in the device list, log a warning and skip capture instead of failing startup.
+    /// Open failures on matched devices still fail startup (they are not swallowed by this flag).
+    /// </summary>
     public bool AllowNoCaptureDevices { get; set; } = true;
 }
