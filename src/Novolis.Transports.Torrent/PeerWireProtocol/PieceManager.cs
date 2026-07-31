@@ -376,8 +376,13 @@ public sealed class PieceManager : IDisposable
         this.OnPieceRequested(this, e);
 
         if (e.PieceData != null)
-            return new Piece(pieceIndex, this.pieceHashes.ElementAt(pieceIndex), this.PieceLength, this.BlockLength,
-                this.BlockCount);
+        {
+            var pieceLength = this.GetPieceLength(pieceIndex);
+            var blockCount = this.GetBlockCount(pieceIndex);
+            return new Piece(pieceIndex, this.pieceHashes.ElementAt(pieceIndex), pieceLength, this.BlockLength,
+                blockCount, e.PieceData);
+        }
+
         return null;
     }
 

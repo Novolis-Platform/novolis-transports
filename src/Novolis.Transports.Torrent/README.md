@@ -2,7 +2,13 @@
 
 BitTorrent 1.0 peer client for the Novolis transports stack.
 
-## Usage
+## Install
+
+```bash
+dotnet add package Novolis.Transports.Torrent
+```
+
+## Quick start
 
 ```csharp
 using Novolis.Transports.Torrent;

@@ -155,8 +155,14 @@ public sealed class Peer : IDisposable
         this.StartUploading();
         this.StartKeepingConnectionAlive();
 
-        // send handshake
+        // Outbound: we send handshake first. Inbound: listener already consumed remote handshake.
         this.EnqueueSendMessage(new HandshakeMessage(this.pieceManager.TorrentInfoHash, localPeerId));
+        if (peerId != null)
+        {
+            // Inbound peer: handshake is complete after our reply — advertise availability immediately.
+            this.EnqueueSendMessage(new BitFieldMessage(this.pieceManager.BitField
+                .Select(x => x == PieceStatus.Present).ToArray()));
+        }
     }
 
     /// <summary>
@@ -721,12 +727,14 @@ public sealed class Peer : IDisposable
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message!.PieceIndex >= 0 &&
+            var blockIndex = message!.BlockOffset / this.pieceManager.BlockLength;
+            var expectedBlockLength = this.pieceManager.GetBlockLength(message.PieceIndex, blockIndex);
+            if (message.PieceIndex >= 0 &&
                 message.PieceIndex < this.pieceManager.PieceCount &&
                 message.BlockOffset >= 0 &&
-                message.BlockOffset < this.pieceManager.PieceLength &&
+                message.BlockOffset < this.pieceManager.GetPieceLength(message.PieceIndex) &&
                 message.BlockOffset % this.pieceManager.BlockLength == 0 &&
-                message.Data.Length == this.pieceManager.GetPieceLength(message.PieceIndex))
+                message.BlockDataLength == expectedBlockLength)
                 this.EnqueueDownloadMessage(message);
             else
                 this.OnCommunicationErrorOccurred(this,
@@ -749,13 +757,14 @@ public sealed class Peer : IDisposable
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message!.PieceIndex >= 0 &&
-                message.PieceIndex < this.pieceManager.BlockCount &&
+            var blockIndex = message!.BlockOffset / this.pieceManager.BlockLength;
+            var expectedBlockLength = this.pieceManager.GetBlockLength(message.PieceIndex, blockIndex);
+            if (message.PieceIndex >= 0 &&
+                message.PieceIndex < this.pieceManager.PieceCount &&
                 message.BlockOffset >= 0 &&
-                message.BlockOffset < this.pieceManager.GetBlockCount(message.PieceIndex) &&
-                message.BlockOffset / this.pieceManager.BlockLength == 0 &&
-                message.BlockLength == this.pieceManager.GetBlockLength(message.PieceIndex,
-                    message.BlockOffset / this.pieceManager.BlockLength))
+                message.BlockOffset < this.pieceManager.GetPieceLength(message.PieceIndex) &&
+                message.BlockOffset % this.pieceManager.BlockLength == 0 &&
+                message.BlockLength == expectedBlockLength)
                 this.EnqueueUploadMessage(message);
             else
                 this.OnCommunicationErrorOccurred(this,
@@ -778,7 +787,8 @@ public sealed class Peer : IDisposable
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
         {
-            if (message!.BitField.Length >= this.pieceManager.BlockCount)
+            // Bitfield is one bit per piece (not per block).
+            if (message!.BitField.Length >= this.pieceManager.PieceCount)
             {
                 for (var i = 0; i < this.BitField.Length; i++) this.BitField[i] = message.BitField[i];
 
@@ -1089,10 +1099,11 @@ public sealed class Peer : IDisposable
 
                         if (piece != null &&
                             piece.PieceLength > rm.BlockOffset)
-                            // return the piece
-                            this.EnqueueSendMessage(new PieceMessage(rm.PieceIndex, rm.BlockOffset,
-                                (int)piece.GetBlockLength(rm.PieceIndex), piece.GetBlock(rm.PieceIndex)));
-                        // invalid requeste received -> ignore
+                        {
+                            var block = piece.GetBlock(rm.BlockOffset);
+                            this.EnqueueSendMessage(new PieceMessage(rm.PieceIndex, rm.BlockOffset, block.Length,
+                                block));
+                        }
                     }
                     else if (message is CancelMessage)
                     {
@@ -1101,10 +1112,12 @@ public sealed class Peer : IDisposable
                     else if (message is InterestedMessage)
                     {
                         this.LeechingState = LeechingState.Interested;
+                        this.EnqueueSendMessage(new UnchokeMessage());
                     }
                     else if (message is UninterestedMessage)
                     {
                         this.LeechingState = LeechingState.Uninterested;
+                        this.EnqueueSendMessage(new ChokeMessage());
                     }
 
                 Thread.Sleep(timeout);
