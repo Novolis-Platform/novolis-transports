@@ -444,7 +444,7 @@ public sealed class Peer : IDisposable
                     else if (message is UnchokeMessage)
                     {
                         this.SeedingState = SeedingState.Unchoked;
-                        Console.Error.WriteLine($"[Peer] got Unchoke from {this.Endpoint}");
+
                         unchokeMessagesSent = 0;
                     }
 
@@ -791,8 +791,6 @@ public sealed class Peer : IDisposable
             if (message!.BitField.Length >= this.pieceManager.PieceCount)
             {
                 for (var i = 0; i < this.BitField.Length; i++) this.BitField[i] = message.BitField[i];
-                Console.Error.WriteLine(
-                    $"[BitField] from {this.Endpoint} bits={message.BitField.Length} have={message.BitField.Count(x => x)}");
 
                 // notify downloading thread
                 this.EnqueueDownloadMessage(message);
@@ -800,15 +798,10 @@ public sealed class Peer : IDisposable
                 // Immediately express interest if the peer has pieces we still need.
                 if (this.SeedingState == SeedingState.Choked &&
                     this.BitField.Where((has, i) => has && this.pieceManager.BitField[i] == PieceStatus.Missing).Any())
-                {
-                    Console.Error.WriteLine($"[Peer] sending Interested to {this.Endpoint}");
                     this.EnqueueSendMessage(new InterestedMessage());
-                }
             }
             else
             {
-                Console.Error.WriteLine(
-                    $"[BitField] REJECT from {this.Endpoint} len={message.BitField.Length} need>={this.pieceManager.PieceCount}");
                 this.OnCommunicationErrorOccurred(this,
                     new PeerCommunicationErrorEventArgs("Invalid bit field message.", true));
             }
@@ -859,7 +852,7 @@ public sealed class Peer : IDisposable
         message.CannotBeNull();
 
         if (this.HandshakeState == HandshakeState.SendAndReceived)
-            this.EnqueueDownloadMessage(message!);
+            this.EnqueueUploadMessage(message!);
         else
             this.OnCommunicationErrorOccurred(this,
                 new PeerCommunicationErrorEventArgs("Invalid message sequence.", true));
@@ -953,14 +946,12 @@ public sealed class Peer : IDisposable
             {
                 this.OnCommunicationErrorOccurred(this,
                     new PeerCommunicationErrorEventArgs("Invalid handshake message.", true));
-                Console.Error.WriteLine($"[Peer] invalid handshake from {this.Endpoint}");
             }
         }
         else
         {
             this.OnCommunicationErrorOccurred(this,
                 new PeerCommunicationErrorEventArgs("Invalid message sequence.", true));
-            Console.Error.WriteLine($"[Peer] unexpected handshake while state={this.HandshakeState} from {this.Endpoint}");
         }
     }
 
@@ -1126,7 +1117,6 @@ public sealed class Peer : IDisposable
                     else if (message is InterestedMessage)
                     {
                         this.LeechingState = LeechingState.Interested;
-                        Console.Error.WriteLine($"[Peer] got Interested from {this.Endpoint} → Unchoke");
                         this.EnqueueSendMessage(new UnchokeMessage());
                     }
                     else if (message is UninterestedMessage)
