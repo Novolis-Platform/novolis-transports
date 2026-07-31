@@ -1,6 +1,6 @@
 # Novolis.Transports.Http.Extensions
 
-JSON and HTTP verb extension methods for `IRestClient`.
+REST convenience extensions on `IRestClient`: typed JSON GET/POST/PUT/PATCH/DELETE and generic `SendAsync<T>` helpers using `System.Text.Json` with `JsonSerializerDefaults.Web`.
 
 ## Install
 
@@ -8,24 +8,40 @@ JSON and HTTP verb extension methods for `IRestClient`.
 dotnet add package Novolis.Transports.Http.Extensions
 ```
 
-**Prerequisites:** [.NET 10 SDK](https://dotnet.microsoft.com/download) (`net10.0`).
+Depends on `Novolis.Transports.Http.Abstractions`. Register the client via `Novolis.Transports.Http`.
 
 ## Quick start
 
 ```csharp
-var dto = await client.GetAsync<MyDto>("/api/items", cancellationToken);
+using Novolis.Transports.Http.Abstractions;
+using Novolis.Transports.Http.Extensions;
+
+IRestClient client = /* from DI */;
+
+var user = await client.GetAsync<UserDto>("https://api.example.com/users/1");
+var created = await client.PostAsync<CreateUserRequest, UserDto>(
+    "https://api.example.com/users",
+    new CreateUserRequest { Name = "Ada" });
+
+await client.DeleteAsync("https://api.example.com/users/1");
 ```
 
-## Related packages
+## API
 
-| Package | When to use |
-|---------|-------------|
-| `Novolis.Transports.Http` | Core client and DI |
+| Extension on `IRestClient` | Role |
+|----------------------------|------|
+| `GetAsync<T>`, `GetAsync` | GET with optional deserialization |
+| `PostAsync<T>`, `PostAsync<TRequest, TResponse>` | POST |
+| `PutAsync<T>`, `PutAsync<TRequest, TResponse>` | PUT |
+| `PatchAsync<T>`, `PatchAsync<TRequest, TResponse>` | PATCH |
+| `DeleteAsync<T>`, `DeleteAsync` | DELETE |
+| `HeadAsync`, `OptionsAsync`, `TraceAsync` | Other verbs |
+| `SendAsync<T>(HttpRequestMessage)` | Generic send + deserialize |
 
-## More documentation
+## Related
 
-- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
-
-## Support
-
-Pre-release.
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Http` | `AddNovolisHttp` DI setup |
+| `Novolis.Transports.Http.Abstractions` | `IRestClient` contract |
+| `Novolis.Transports.Http.Authentication` | Auth handlers for protected APIs |

@@ -1,6 +1,6 @@
 # Novolis.Transports.Tcp.Server
 
-Kestrel-based TCP server hosting with per-connection `IConnectionHandler` dispatch.
+Kestrel-hosted TCP server: listen on a port and dispatch connections to `IConnectionHandler` implementations.
 
 ## Install
 
@@ -8,26 +8,43 @@ Kestrel-based TCP server hosting with per-connection `IConnectionHandler` dispat
 dotnet add package Novolis.Transports.Tcp.Server
 ```
 
-**Prerequisites:** [.NET 10 SDK](https://dotnet.microsoft.com/download) (`net10.0`).
-
-## Quick start
+## Quick start — minimal host
 
 ```csharp
-var host = Server.CreateTcpServer<MyHandler>(port: 9000);
-await host.RunAsync();
+using Novolis.Transports.Tcp.Server;
+
+public sealed class EchoHandler : IConnectionHandler
+{
+    public Task<ReadOnlyMemory<byte>> HandleAsync(ReadOnlyMemory<byte> request) =>
+        Task.FromResult(request);
+}
+
+await Server.CreateTcpServer<EchoHandler>(port: 9000).RunAsync();
 ```
 
-## Related packages
+## Quick start — ASP.NET Core
 
-| Package | When to use |
-|---------|-------------|
-| `Novolis.Transports.Tcp.Client` | TCP client |
-| `Novolis.Transports.Tcp.Cryptography` | Payload encryption |
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+builder.UseTcpConnectionHandler<EchoHandler>(port: 9000);
+```
 
-## More documentation
+Also available on `IWebHostBuilder` and `IHostBuilder` via `UseTcpConnectionHandler<THandler>(port)`.
 
-- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
+## API
 
-## Support
+| Type | Role |
+|------|------|
+| `IConnectionHandler` | `HandleAsync(ReadOnlyMemory<byte>)` |
+| `Server.CreateTcpServer<THandler>` | Standalone TCP host |
+| `WebApplicationBuilderExtensions.UseTcpConnectionHandler` | ASP.NET Core integration |
+| `WebHostBuilderExtensions.UseTcpConnectionHandler` | Generic host integration |
+| `TcpServerHostBuilderExtensions.UseTcpConnectionHandler` | `IHostBuilder` integration |
 
-Pre-release.
+## Related
+
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Tcp.Client` | Send requests to this server |
+| `Novolis.Transports.Tcp.Abstractions` | Middleware pipeline |
+| `Novolis.Transports.Tcp.Cryptography` | Payload encryption (used by client) |

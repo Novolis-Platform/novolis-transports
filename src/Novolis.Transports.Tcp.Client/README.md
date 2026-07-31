@@ -1,6 +1,6 @@
 # Novolis.Transports.Tcp.Client
 
-Simple DI-registered TCP client with configurable read timeout.
+TCP client for sending byte payloads to a remote host. Automatically registers TCP payload encryption helpers.
 
 ## Install
 
@@ -8,26 +8,36 @@ Simple DI-registered TCP client with configurable read timeout.
 dotnet add package Novolis.Transports.Tcp.Client
 ```
 
-**Prerequisites:** [.NET 10 SDK](https://dotnet.microsoft.com/download) (`net10.0`).
+Depends on `Novolis.Transports.Tcp.Abstractions` and `Novolis.Transports.Tcp.Cryptography`.
 
 ## Quick start
 
 ```csharp
-services.AddTcpClient(o => o.Timeout = TimeSpan.FromSeconds(10));
-var response = await client.SendAsync(ip, port, payload);
+using Microsoft.Extensions.DependencyInjection;
+using Novolis.Transports.Tcp.Client;
+
+services.AddTcpClient(o => o.SendTimeout = TimeSpan.FromSeconds(5));
+
+var client = sp.GetRequiredService<ITcpClient>();
+var response = await client.SendAsync(
+    IPAddress.Loopback,
+    port: 9000,
+    data: Encoding.UTF8.GetBytes("ping"));
 ```
 
-## Related packages
+## API
 
-| Package | When to use |
-|---------|-------------|
-| `Novolis.Transports.Tcp.Cryptography` | AES payload encryption helpers |
-| `Novolis.Transports.Tcp.Server` | Kestrel TCP server hosting |
+| Type | Role |
+|------|------|
+| `ITcpClient` | `SendAsync(IPAddress, port, data)` |
+| `TcpClient` | Default implementation |
+| `TcpClientOptions` | Timeout and client options |
+| `ServiceCollectionExtensions.AddTcpClient` | Registers client + encryption |
 
-## More documentation
+## Related
 
-- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
-
-## Support
-
-Pre-release.
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Tcp.Server` | Host TCP listener on a port |
+| `Novolis.Transports.Tcp.Abstractions` | Middleware pipeline for handlers |
+| `Novolis.Transports.Tcp.Cryptography` | AES payload encrypt/decrypt (auto-registered) |

@@ -1,36 +1,39 @@
 # Novolis.Transports.Tcp.Cryptography
 
-AES encrypt/decrypt helpers for TCP payloads (`AddTcpPayloadEncryption`).
+AES payload encryption for Novolis TCP client/server. Registered automatically by `AddTcpClient` and TCP server setup; can also be registered explicitly.
 
 ## Install
 
-```bash
-dotnet add package Novolis.Transports.Tcp.Cryptography
-```
-
-**Prerequisites:** [.NET 10 SDK](https://dotnet.microsoft.com/download) (`net10.0`).
+Not published as a standalone NuGet package (`IsPackable=false`). Consumed transitively via `Novolis.Transports.Tcp.Client` / `.Server`.
 
 ## Quick start
 
 ```csharp
+using Novolis.Transports.Tcp.Cryptography;
+
 services.AddTcpPayloadEncryption(o =>
 {
-    o.Key = Convert.ToBase64String(keyBytes);
-    o.Iv = Convert.ToBase64String(ivBytes);
+    o.Key = keyBytes;
+    o.Iv = ivBytes;
 });
 ```
 
-## Related packages
+## API
 
-| Package | When to use |
-|---------|-------------|
-| `Novolis.Transports.Tcp.Client` | Registers encryption with the client |
-| `Novolis.Transports.Tcp.Server` | Registers encryption with the server |
+| Type | Role |
+|------|------|
+| `ITcpPayloadEncryptor` | Encrypt/decrypt byte payloads |
+| `ITcpPayloadEncryptorFactory` | Factory for encryptors |
+| `TcpPayloadEncryptor` / `TcpPayloadEncryptorFactory` | Default AES implementations |
+| `TcpPayloadEncryptionOptions` | Key and IV configuration |
+| `AesKey` | Record struct `(Key, Iv)` |
+| `ServiceCollectionExtensions.AddTcpPayloadEncryption` | DI registration |
 
-## More documentation
+Obsolete `IAdvancedEncryptionService` / `AddAdvancedEncryption` aliases remain for migration.
 
-- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
+## Related
 
-## Support
-
-Pre-release. Replace default key material before production use.
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Tcp.Client` | Auto-registers encryption |
+| `Novolis.Transports.Tcp.Server` | Server-side handler host |

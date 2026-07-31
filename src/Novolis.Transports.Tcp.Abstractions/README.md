@@ -1,6 +1,6 @@
 # Novolis.Transports.Tcp.Abstractions
 
-TCP connection middleware pipeline contracts and in-memory round-trip testing (`MemoryTcpTransport`).
+TCP connection middleware pipeline for request/response handlers. Compose middleware around a terminal delegate; test in-memory with `MemoryTcpTransport`.
 
 ## Install
 
@@ -8,34 +8,42 @@ TCP connection middleware pipeline contracts and in-memory round-trip testing (`
 dotnet add package Novolis.Transports.Tcp.Abstractions
 ```
 
-**Prerequisites:** [.NET 10 SDK](https://dotnet.microsoft.com/download) (`net10.0`).
-
 ## Quick start
 
 ```csharp
 using Novolis.Transports.Tcp.Abstractions;
 
-static ValueTask<ReadOnlyMemory<byte>> EchoHandler(ReadOnlyMemory<byte> request) =>
-    ValueTask.FromResult(request);
+ValueTask<ReadOnlyMemory<byte>> Terminal(ReadOnlyMemory<byte> input) =>
+    new(Encoding.UTF8.GetBytes("pong"));
+
+var pipeline = TcpConnectionPipeline.Build(Terminal, middlewares:
+[
+    async (input, next) =>
+    {
+        var response = await next(input);
+        return response; // transform if needed
+    },
+]);
 
 var response = await MemoryTcpTransport.RoundTripAsync(
-    EchoHandler,
-    new byte[] { 1, 2, 3 });
+    Terminal,
+    Encoding.UTF8.GetBytes("ping"),
+    middlewares: null);
 ```
 
-Compose middleware with `TcpConnectionPipeline.Build` before the terminal handler.
+## API
 
-## Related packages
+| Type | Role |
+|------|------|
+| `ITcpConnectionMiddleware` | `InvokeAsync(input, next)` |
+| `TcpConnectionRequestDelegate` | Terminal handler signature |
+| `TcpConnectionPipeline.Build` | Compose middleware + terminal |
+| `MemoryTcpTransport.RoundTripAsync` | In-memory round-trip for tests |
 
-| Package | When to use |
-|---------|-------------|
-| `Novolis.Transports.Tcp.Client` | DI TCP client |
-| `Novolis.Transports.Tcp.Server` | Kestrel TCP server hosting |
+## Related
 
-## More documentation
-
-- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
-
-## Support
-
-Pre-release (`2026.1.*` on GitHub Packages).
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Tcp.Client` | TCP client send |
+| `Novolis.Transports.Tcp.Server` | Kestrel-hosted TCP listener |
+| `Novolis.Transports.Tcp.Cryptography` | Optional AES payload encryption (internal package) |

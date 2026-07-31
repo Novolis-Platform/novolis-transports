@@ -1,6 +1,6 @@
 # Novolis.Transports.Http.Authentication
 
-HTTP authentication handlers: Basic, API key header, and OIDC client credentials.
+Built-in `IHttpAuthentication` implementations: Basic, API key, and OIDC bearer token injection.
 
 ## Install
 
@@ -8,29 +8,50 @@ HTTP authentication handlers: Basic, API key header, and OIDC client credentials
 dotnet add package Novolis.Transports.Http.Authentication
 ```
 
-**Prerequisites:** [.NET 10 SDK](https://dotnet.microsoft.com/download) (`net10.0`).
+Depends on `Novolis.Transports.Http.Abstractions`. Wire through `AddNovolisHttp` in `Novolis.Transports.Http`.
 
 ## Quick start
 
 ```csharp
-services.Configure<BasicAuthenticationConfiguration>(o =>
-{
-    o.Username = "user";
-    o.Password = "secret";
-});
-services.AddSingleton<IHttpAuthentication, BasicAuthentication>();
+using Novolis.Transports.Http;
+using Novolis.Transports.Http.Authentication;
+
+services.AddNovolisHttp(auth => auth.AddAuthentication<BasicAuthentication>());
 ```
 
-## Related packages
+Configure options when constructing or via DI:
 
-| Package | When to use |
-|---------|-------------|
-| `Novolis.Transports.Http` | Client factory and `AddNovolisHttp` |
+```csharp
+new BasicAuthentication(new BasicAuthenticationConfiguration
+{
+    Username = "user",
+    Password = "pass",
+});
 
-## More documentation
+new ApiKeyAuthentication(new ApiKeyAuthenticationConfiguration
+{
+    HeaderName = "X-Api-Key",
+    ApiKey = "secret",
+});
 
-- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
+new OidcAuthentication(new OidcAuthenticationConfiguration { /* ... */ }, tokenProvider);
+```
 
-## Support
+## API
 
-Pre-release.
+| Type | Role |
+|------|------|
+| `BasicAuthentication` / `BasicAuthenticationConfiguration` | HTTP Basic auth |
+| `ApiKeyAuthentication` / `ApiKeyAuthenticationConfiguration` | Header-based API key |
+| `OidcAuthentication` / `OidcAuthenticationConfiguration` | OIDC bearer tokens |
+| `OidcTokenProvider` | Default `IOidcTokenProvider` |
+| `IOidcTokenProvider` | Token acquisition port |
+| `IOicdTokenProvider` | Obsolete typo alias → `IOidcTokenProvider` |
+
+## Related
+
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Http.Abstractions` | `IHttpAuthentication` contract |
+| `Novolis.Transports.Http` | DI registration |
+| `Novolis.Transports.Http.Extensions` | Typed REST calls after auth |

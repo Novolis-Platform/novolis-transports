@@ -1,6 +1,6 @@
 # Novolis.Transports.Torrent
 
-BitTorrent 1.0 peer client for the Novolis transports stack.
+BitTorrent client, metadata parsing, and torrent file creation. Large protocol surface (BEncoding, peer wire, tracker HTTP/UDP) for seeder/leecher scenarios.
 
 ## Install
 
@@ -13,19 +13,43 @@ dotnet add package Novolis.Transports.Torrent
 ```csharp
 using Novolis.Transports.Torrent;
 
-if (!TorrentInfo.TryLoad(@"TinyCore.iso.torrent", out var info) || info is null)
-    throw new InvalidOperationException("Bad torrent.");
+if (!TorrentInfo.TryLoad(@"C:\torrents\sample.torrent", out var info))
+    throw new InvalidOperationException("Invalid torrent file.");
 
-using var client = new TorrentClient(listeningPort: 6881, baseDirectory: @"D:\downloads");
-client.Start();
+using var client = new TorrentClient(listenPort: 6881, downloadDirectory: @"C:\downloads");
 client.Start(info);
 
-var progress = client.GetProgressInfo(info.InfoHash);
+var progress = client.GetProgressInfo(info.InfoHash); // 0–100%
 client.Stop(info.InfoHash);
 ```
 
-## Provenance
+Create a torrent file:
 
-Ported from `Frank.TorrentClient` (MIT; Aljaz Simonic / Frank R. Haugen). Legacy `DefensiveProgrammingFramework` replaced with a net10-local guard shim. Search scrapers and GUIs are not included.
+```csharp
+TorrentCreator.Create(/* options */);
+```
 
-`GetProgressInfo` reports **0–100** percent complete.
+## API
+
+| Type | Role |
+|------|------|
+| `TorrentClient` | `Start()`, `Start(TorrentInfo)`, `Stop`, `GetProgressInfo` |
+| `TorrentInfo` | `TryLoad(path|bytes)`, metadata properties |
+| `TorrentCreator` | Static torrent file creation |
+| `TorrentProgressInfo` / `TorrentPeerInfo` / `TorrentTrackerInfo` | Progress DTOs |
+| `TorrentClientException`, `BEncodingException`, … | Error types |
+
+## Dogfooding / apps
+
+Used by `Novolis.Avalonia.Controls.TorrentSessionPanel` and **TorrentLab** smoke tests in `novolis-dogfooding`.
+
+## Related
+
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Http` | HTTP tracker communication helpers |
+| `Novolis.Avalonia.Controls` | UI torrent session panel |
+
+## More documentation
+
+- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)

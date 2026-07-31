@@ -1,6 +1,6 @@
 # Novolis.Transports.Http.Abstractions
 
-Contracts for HTTP REST clients, authentication, and request enrichers.
+HTTP client, authentication, and request-enricher contracts for the Novolis HTTP transport stack.
 
 ## Install
 
@@ -8,25 +8,44 @@ Contracts for HTTP REST clients, authentication, and request enrichers.
 dotnet add package Novolis.Transports.Http.Abstractions
 ```
 
-**Prerequisites:** [.NET 10 SDK](https://dotnet.microsoft.com/download) (`net10.0`).
+Contracts only — register implementations via `Novolis.Transports.Http` and `Novolis.Transports.Http.Authentication`.
 
 ## Quick start
 
-Implement `IHttpAuthentication` and `IRestClient`, or reference `Novolis.Transports.Http` for default DI wiring.
+```csharp
+using Novolis.Transports.Http.Abstractions;
 
-## Related packages
+public sealed class MyAuth : IHttpAuthentication
+{
+    public Task AuthenticateAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        return Task.CompletedTask;
+    }
+}
 
-| Package | When to use |
-|---------|-------------|
-| `Novolis.Transports.Http` | `AddNovolisHttp` and default `RestClient` |
-| `Novolis.Transports.Http.Authentication` | Basic, API key, OIDC handlers |
-| `Novolis.Transports.Http.Extensions` | JSON verb helpers |
+public sealed class MyEnricher : IRequestEnricher
+{
+    public void Enrich(HttpRequestMessage request) =>
+        request.Headers.Add("X-Client", "Novolis");
+}
+```
 
-## More documentation
+## API
 
-- [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
-- [Design](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/design.md)
+| Type | Role |
+|------|------|
+| `IRestClient` | `SendAsync(HttpRequestMessage, CancellationToken)` |
+| `IRestClientFactory` | `CreateClient(vanilla?)`, `CreateClient(enrichers, authentications)` |
+| `IHttpAuthentication` | `AuthenticateAsync(request, CancellationToken)` |
+| `IRequestEnricher` | `Enrich(request)` |
+| `IAuthenticationBuilder` | `AddAuthentication<T>()`, `AddAuthentication<T>(instance)` |
+| `IEnricherBuilder` | `AddEnricher<T>()`, `AddEnricher<T>(instance)` |
 
-## Support
+## Related
 
-Pre-release.
+| Package | Role |
+|---------|------|
+| `Novolis.Transports.Http` | DI registration (`AddNovolisHttp`) |
+| `Novolis.Transports.Http.Authentication` | Built-in auth handlers |
+| `Novolis.Transports.Http.Extensions` | Typed REST helpers on `IRestClient` |
