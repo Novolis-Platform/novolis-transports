@@ -509,22 +509,41 @@ public sealed class TorrentClient : IDisposable
             try
             {
                 bytesRead = tcp.GetStream().Read(buffer, 0, buffer.Length);
+                Console.Error.WriteLine($"[Listen] accept {tcp.Client.RemoteEndPoint} bytes={bytesRead}");
 
                 if (bytesRead > 0)
+                {
+                    var decoded = false;
                     foreach (var message in PeerMessage.Decode(buffer, ref offset, bytesRead))
-                        if (message is HandshakeMessage)
+                        if (message is HandshakeMessage hs)
+                        {
+                            decoded = true;
+                            Console.Error.WriteLine($"[Listen] handshake info={hs.InfoHash} peer={hs.PeerId}");
                             lock (((IDictionary)this.transfers).SyncRoot)
                             {
-                                if (this.transfers.TryGetValue(message.As<HandshakeMessage>().InfoHash, out transfer))
-                                    transfer.AddLeecher(tcp, message.As<HandshakeMessage>().PeerId);
+                                if (this.transfers.TryGetValue(hs.InfoHash, out transfer))
+                                    transfer.AddLeecher(tcp, hs.PeerId);
                                 else
-                                    Debug.WriteLine(
-                                        $"invalid torrent info hash: {message.As<HandshakeMessage>().InfoHash} received");
+                                    Console.Error.WriteLine(
+                                        $"[Listen] no transfer for {hs.InfoHash}; known={string.Join(',', this.transfers.Keys)}");
                             }
+                        }
+
+                    if (!decoded)
+                    {
+                        Console.Error.WriteLine("[Listen] no handshake decoded; closing");
+                        tcp.Close();
+                    }
+                }
+                else
+                {
+                    tcp.Close();
+                }
             }
             catch (IOException ex)
             {
                 // something is wrong with remote peer -> ignore it
+                Console.Error.WriteLine($"[Listen] read fail {tcp.Client.RemoteEndPoint}: {ex.Message}");
                 Debug.WriteLine($"could not read stream from {tcp.Client.RemoteEndPoint}: {ex.Message}");
 
                 // close the connection

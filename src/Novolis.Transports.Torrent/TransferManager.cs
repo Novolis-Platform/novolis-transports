@@ -375,6 +375,7 @@ public sealed class TransferManager : IDisposable
                 {
                     Debug.WriteLine(
                         $"adding leeching peer {tcp.Client.RemoteEndPoint} to torrent {this.TorrentInfo.InfoHash}");
+                    Console.Error.WriteLine($"[AddLeecher] {tcp.Client.RemoteEndPoint} peerId={peerId}");
 
                     // setup tcp client
                     tcp.ReceiveBufferSize =
@@ -389,6 +390,7 @@ public sealed class TransferManager : IDisposable
                     peer.CommunicationErrorOccurred += this.Peer_CommunicationErrorOccurred;
 
                     this.peers.Add(tcp.Client.RemoteEndPoint as IPEndPoint, peer);
+                    Console.Error.WriteLine($"[AddLeecher] peers={this.peers.Count}");
                 }
                 else
                 {
@@ -586,6 +588,7 @@ public sealed class TransferManager : IDisposable
 
         if (e.IsFatal)
         {
+            Console.Error.WriteLine($"[PeerFatal] {peer.Endpoint}: {e.ErrorMessage}");
             Debug.WriteLine(
                 $"fatal communication error occurred for peer {peer.Endpoint} on torrent {this.TorrentInfo.InfoHash}: {e.ErrorMessage}");
 
@@ -604,6 +607,7 @@ public sealed class TransferManager : IDisposable
         }
         else
         {
+            Console.Error.WriteLine($"[PeerNonFatal] {peer.Endpoint}: {e.ErrorMessage}");
             Debug.WriteLine(
                 $"communication error occurred for peer {peer.Endpoint} on torrent {this.TorrentInfo.InfoHash}: {e.ErrorMessage}");
         }
@@ -639,6 +643,7 @@ public sealed class TransferManager : IDisposable
                 else
                 {
                     Debug.WriteLine($"adding seeding peer {endpoint} to torrent {this.TorrentInfo.InfoHash}");
+                    Console.Error.WriteLine($"[PeerConnected] {endpoint} torrent={this.TorrentInfo.InfoHash}");
 
                     // add new peer
                     peer = new Peer(new PeerCommunicator(this.throttlingManager, tcp), this.pieceManager, this.PeerId);
