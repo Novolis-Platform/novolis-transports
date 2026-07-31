@@ -10,6 +10,7 @@
     <Project Path="src/Novolis.Transports.Http.Extensions/Novolis.Transports.Http.Extensions.csproj" />
     <Project Path="src/Novolis.Transports.Http/Novolis.Transports.Http.csproj" />
     <Project Path="src/Novolis.Transports.WireFish/Novolis.Transports.WireFish.csproj" />
+    <Project Path="src/Novolis.Transports.Torrent/Novolis.Transports.Torrent.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Novolis.Transports.Unit/Novolis.Transports.Unit.csproj" />

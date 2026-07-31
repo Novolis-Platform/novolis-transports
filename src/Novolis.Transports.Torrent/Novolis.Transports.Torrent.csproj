@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Novolis.Transports.Torrent</PackageId>
+    <IsPackable>true</IsPackable>
+    <RootNamespace>Novolis.Transports.Torrent</RootNamespace>
+    <Description>
+      BitTorrent Protocol 1.0 peer client: BEncode, .torrent metadata, HTTP/UDP trackers, peer wire, piece persistence.
+      Ported from Frank.TorrentClient (MIT; original Aljaz Simonic / Frank R. Haugen).
+    </Description>
+    <PackageTags>bittorrent;torrent;p2p;bencode;transports</PackageTags>
+    <PackageProjectUrl>https://github.com/Novolis-Platform/novolis-transports</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Novolis-Platform/novolis-transports</RepositoryUrl>
+    <!-- ProjectRef consumers need DefensiveProgrammingFramework beside this assembly. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Legacy port: nullable/docs noise from Frank.TorrentClient; tighten over time. -->
+    <NoWarn>$(NoWarn);1591;1574;8600;8625;8604;8602;8618;8603;8622;8601;1658;1584;1570;8765;8767;CS8618;CS8625;CS8602;CS8603;CS8604;CS8622;SYSLIB0014</NoWarn>
+  </PropertyGroup>
+  <!-- No third-party deps: legacy DefensiveProgrammingFramework replaced by Internal/DefensiveCompat.cs -->
+</Project>
