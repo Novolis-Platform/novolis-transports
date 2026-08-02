@@ -19,6 +19,7 @@
     <ProjectReference Include="../../src/Novolis.Transports.Tcp.Abstractions/Novolis.Transports.Tcp.Abstractions.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Tcp.Client/Novolis.Transports.Tcp.Client.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj" />
+    <ProjectReference Include="../../src/Novolis.Transports.Tcp.Cryptography/Novolis.Transports.Tcp.Cryptography.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.WireFish/Novolis.Transports.WireFish.csproj" />
   </ItemGroup>
 </Project>
