@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.LocalIpc
 
 Framed local IPC transport for typed request/response and event-stream messaging over **named pipes** (Windows) or **Unix domain sockets** (non-Windows). Domain-agnostic — typed RPC helpers live in consumer packages (`Novolis.Agent.Surface`, `Novolis.Avalonia.Agent.Protocol`, etc.).
@@ -83,3 +91,4 @@ Used by Live Studio audio host, Novolis Agent surface, Avalonia Agent MCP UI, an
 | `Novolis.Agent.Surface` | Agent host IPC + typed message helpers |
 | `Novolis.Avalonia.Agent.Protocol` | UI agent client over default endpoint |
 | `Novolis.Transports.Http` | Remote HTTP transport (complementary) |
+

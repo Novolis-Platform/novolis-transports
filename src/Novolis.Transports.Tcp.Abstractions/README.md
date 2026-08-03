@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Tcp.Abstractions
 
 TCP connection middleware pipeline for request/response handlers. Compose middleware around a terminal delegate; test in-memory with `MemoryTcpTransport`.
@@ -47,3 +55,4 @@ var response = await MemoryTcpTransport.RoundTripAsync(
 | `Novolis.Transports.Tcp.Client` | TCP client send |
 | `Novolis.Transports.Tcp.Server` | Kestrel-hosted TCP listener |
 | `Novolis.Transports.Tcp.Cryptography` | Optional AES payload encryption (internal package) |
+

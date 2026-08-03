@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Http
 
 REST client factory and dependency injection for Novolis HTTP clients. Registers `IRestClient`, `IRestClientFactory`, and `HttpClient` with optional authentication and request enrichers.
@@ -54,3 +62,4 @@ Obsolete `AddFrankHttp*` aliases remain for migration.
 ## More documentation
 
 - [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
+

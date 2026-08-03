@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Torrent
 
 BitTorrent client, metadata parsing, and torrent file creation. Large protocol surface (BEncoding, peer wire, tracker HTTP/UDP) for seeder/leecher scenarios.
@@ -53,3 +61,4 @@ Used by `Novolis.Avalonia.Controls.TorrentSessionPanel` and **TorrentLab** smoke
 ## More documentation
 
 - [Getting started](https://github.com/Novolis-Platform/novolis-transports/blob/main/docs/getting-started.md)
+

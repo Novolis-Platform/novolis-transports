@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Http.Authentication
 
 Built-in `IHttpAuthentication` implementations: Basic, API key, and OIDC bearer token injection.
@@ -55,3 +63,4 @@ new OidcAuthentication(new OidcAuthenticationConfiguration { /* ... */ }, tokenP
 | `Novolis.Transports.Http.Abstractions` | `IHttpAuthentication` contract |
 | `Novolis.Transports.Http` | DI registration |
 | `Novolis.Transports.Http.Extensions` | Typed REST calls after auth |
+

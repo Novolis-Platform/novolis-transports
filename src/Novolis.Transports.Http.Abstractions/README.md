@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Http.Abstractions
 
 HTTP client, authentication, and request-enricher contracts for the Novolis HTTP transport stack.
@@ -49,3 +57,4 @@ public sealed class MyEnricher : IRequestEnricher
 | `Novolis.Transports.Http` | DI registration (`AddNovolisHttp`) |
 | `Novolis.Transports.Http.Authentication` | Built-in auth handlers |
 | `Novolis.Transports.Http.Extensions` | Typed REST helpers on `IRestClient` |
+

@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Tcp.Server
 
 Kestrel-hosted TCP server: listen on a port and dispatch connections to `IConnectionHandler` implementations.
@@ -48,3 +56,4 @@ Also available on `IWebHostBuilder` and `IHostBuilder` via `UseTcpConnectionHand
 | `Novolis.Transports.Tcp.Client` | Send requests to this server |
 | `Novolis.Transports.Tcp.Abstractions` | Middleware pipeline |
 | `Novolis.Transports.Tcp.Cryptography` | Payload encryption (used by client) |
+

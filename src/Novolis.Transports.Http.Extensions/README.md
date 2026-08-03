@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Http.Extensions
 
 REST convenience extensions on `IRestClient`: typed JSON GET/POST/PUT/PATCH/DELETE and generic `SendAsync<T>` helpers using `System.Text.Json` with `JsonSerializerDefaults.Web`.
@@ -45,3 +53,4 @@ await client.DeleteAsync("https://api.example.com/users/1");
 | `Novolis.Transports.Http` | `AddNovolisHttp` DI setup |
 | `Novolis.Transports.Http.Abstractions` | `IRestClient` contract |
 | `Novolis.Transports.Http.Authentication` | Auth handlers for protected APIs |
+

@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.WireFish
 
 Live packet capture (SharpPcap) with `Novolis.Messaging.Channels` and hosted `IPacketHandler` dispatch. Migrated from `Frank.WireFish` / `novolis-wirefish`.
@@ -79,3 +87,4 @@ Used by **WireFishViewer** (`novolis-dogfooding`) for live capture UI.
 ## Support
 
 Pre-release. Legacy `Frank.WireFish` type aliases are obsolete.
+

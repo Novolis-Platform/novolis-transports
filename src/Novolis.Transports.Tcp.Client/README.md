@@ -1,3 +1,11 @@
+<!-- novolis-pkg-brand:start -->
+<p align="center">
+  <a href="https://github.com/Novolis-Platform/novolis-transports">
+    <img src="https://raw.githubusercontent.com/Novolis-Platform/.github/main/brand/logo-icon.svg" width="72" alt="Novolis"/>
+  </a>
+</p>
+<!-- novolis-pkg-brand:end -->
+
 # Novolis.Transports.Tcp.Client
 
 TCP client for sending byte payloads to a remote host. Automatically registers TCP payload encryption helpers.
@@ -41,3 +49,4 @@ var response = await client.SendAsync(
 | `Novolis.Transports.Tcp.Server` | Host TCP listener on a port |
 | `Novolis.Transports.Tcp.Abstractions` | Middleware pipeline for handlers |
 | `Novolis.Transports.Tcp.Cryptography` | AES payload encrypt/decrypt (auto-registered) |
+
