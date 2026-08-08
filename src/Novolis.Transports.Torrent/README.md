@@ -49,14 +49,14 @@ TorrentCreator.Create(/* options */);
 
 ## Dogfooding / apps
 
-Used by `Novolis.Avalonia.Controls.TorrentSessionPanel` and **TorrentLab** smoke tests in `novolis-dogfooding`.
+Used by `Novolis.Avalonia.Torrent.TorrentSessionPanel` and **TorrentLab** smoke tests in `novolis-dogfooding`.
 
 ## Related
 
 | Package | Role |
 |---------|------|
 | `Novolis.Transports.Http` | HTTP tracker communication helpers |
-| `Novolis.Avalonia.Controls` | UI torrent session panel |
+| `Novolis.Avalonia.Torrent` | UI torrent session panel |
 
 ## More documentation
 
