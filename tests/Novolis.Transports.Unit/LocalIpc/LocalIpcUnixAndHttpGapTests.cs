@@ -1,9 +1,7 @@
 using Novolis.Transports.Http;
-using Novolis.Transports.Http.Abstractions;
 using Novolis.Transports.Http.Extensions;
 using Novolis.Transports.Http.Tests.Infrastructure;
 using Novolis.Transports.LocalIpc;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Novolis.Transports.Unit.LocalIpc;
 
@@ -85,31 +83,6 @@ public sealed class LocalIpcUnixAndAutoTests
 public sealed class HttpCoverageGapTests
 {
     [Test]
-    [Obsolete("Covers remaining Frank-prefixed HTTP DI overloads.")]
-    public async Task Frank_single_argument_overloads_register()
-    {
-#pragma warning disable CS0618
-        var servicesA = new ServiceCollection();
-        servicesA.ConfigureTestHttpHandler(new StubHttpMessageHandler());
-        servicesA.AddFrankHttp();
-        await using var spA = servicesA.BuildServiceProvider();
-        await Assert.That(spA.GetRequiredService<IRestClient>()).IsNotNull();
-
-        var servicesB = new ServiceCollection();
-        servicesB.ConfigureTestHttpHandler(new StubHttpMessageHandler());
-        servicesB.AddFrankHttp(e => e.AddEnricher<HeaderEnricher>());
-        await using var spB = servicesB.BuildServiceProvider();
-        await Assert.That(spB.GetRequiredService<IRestClient>()).IsNotNull();
-
-        var servicesC = new ServiceCollection();
-        servicesC.ConfigureTestHttpHandler(new StubHttpMessageHandler());
-        servicesC.AddFrankHttp(a => a.AddAuthentication<MarkerAuth>());
-        await using var spC = servicesC.BuildServiceProvider();
-        await Assert.That(spC.GetRequiredService<IRestClient>()).IsNotNull();
-#pragma warning restore CS0618
-    }
-
-    [Test]
     public async Task PostAsync_untyped_returns_response_message()
     {
         var handler = new StubHttpMessageHandler();
@@ -119,20 +92,5 @@ public sealed class HttpCoverageGapTests
         using var response = await client.PostAsync("https://api.test/echo", new { n = 1 }, CancellationToken.None);
         await Assert.That(response.IsSuccessStatusCode).IsTrue();
         await Assert.That(handler.SentRequests[0].Method).IsEqualTo(HttpMethod.Post);
-    }
-
-    private sealed class HeaderEnricher : IRequestEnricher
-    {
-        public void Enrich(HttpRequestMessage request) =>
-            request.Headers.TryAddWithoutValidation("X-Test-Enrich", "yes");
-    }
-
-    private sealed class MarkerAuth : IHttpAuthentication
-    {
-        public Task AuthenticateAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            request.Headers.TryAddWithoutValidation("X-Marker-Auth", "1");
-            return Task.CompletedTask;
-        }
     }
 }

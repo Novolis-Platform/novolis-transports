@@ -97,7 +97,7 @@ public sealed class CoverageEdgeCaseTests
     }
 
     [Test]
-    public async Task Tcp_Cryptography_Covers_Defaults_Factory_And_Null_Legacy_Configuration()
+    public async Task Tcp_Cryptography_Covers_Defaults_Factory_And_Unconfigured_Registration()
     {
         var options = new TcpPayloadEncryptionOptions();
         var key = options.ToAesKey();
@@ -108,10 +108,8 @@ public sealed class CoverageEdgeCaseTests
         await Assert.That(aes.KeySize).IsEqualTo(256);
         await Assert.That(aes.BlockSize).IsEqualTo(128);
 
-#pragma warning disable CS0618
         var services = new ServiceCollection();
-        services.AddAdvancedEncryption();
-#pragma warning restore CS0618
+        services.AddTcpPayloadEncryption();
         await using var provider = services.BuildServiceProvider();
         await Assert.That(provider.GetRequiredService<ITcpPayloadEncryptor>()).IsNotNull();
     }

@@ -51,8 +51,8 @@ namespace Novolis.Transports.WireFish;
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
                 return liveDevice.Addresses
-                    .Where(addr => addr.Addr != null && addr.Addr.ipAddress != null)
-                    .Select(addr => addr.Addr.ipAddress);
+                    .Where(addr => addr.Addr?.ipAddress is not null)
+                    .Select(addr => addr.Addr!.ipAddress!);
             }
             return Enumerable.Empty<IPAddress>();
         }
@@ -78,7 +78,7 @@ namespace Novolis.Transports.WireFish;
         /// </summary>
         public static string GetDeviceCaptureFilter(this DevicePacket devicePacket)
         {
-            return devicePacket.Device.Filter;
+            return devicePacket.Device.Filter ?? string.Empty;
         }
 
         /// <summary>
@@ -102,8 +102,9 @@ namespace Novolis.Transports.WireFish;
         {
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
-                return liveDevice.Interface.FriendlyName.Contains("Wireless", StringComparison.OrdinalIgnoreCase) ||
-                       liveDevice.Interface.FriendlyName.Contains("Wi-Fi", StringComparison.OrdinalIgnoreCase);
+                var friendlyName = liveDevice.Interface?.FriendlyName ?? string.Empty;
+                return friendlyName.Contains("Wireless", StringComparison.OrdinalIgnoreCase) ||
+                       friendlyName.Contains("Wi-Fi", StringComparison.OrdinalIgnoreCase);
             }
             return false;
         }
@@ -115,7 +116,7 @@ namespace Novolis.Transports.WireFish;
         {
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
-                return liveDevice.Interface.FriendlyName;
+                return liveDevice.Interface?.FriendlyName;
             }
             return null;
         }
@@ -128,7 +129,7 @@ namespace Novolis.Transports.WireFish;
         {
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
-                return liveDevice.Interface.Name;
+                return liveDevice.Interface?.Name;
             }
             return null;
         }
@@ -143,7 +144,7 @@ namespace Novolis.Transports.WireFish;
                 NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
                 foreach (NetworkInterface networkInterface in interfaces)
                 {
-                    if (networkInterface.Id == liveDevice.Interface.Name)
+                    if (networkInterface.Id == liveDevice.Interface?.Name)
                     {
                         return networkInterface;
                     }

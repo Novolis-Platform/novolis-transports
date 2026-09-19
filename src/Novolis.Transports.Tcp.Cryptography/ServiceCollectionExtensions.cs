@@ -19,20 +19,4 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ITcpPayloadEncryptor, TcpPayloadEncryptor>();
         return services;
     }
-
-    /// <inheritdoc cref="AddTcpPayloadEncryption(IServiceCollection, Action{TcpPayloadEncryptionOptions}?)"/>
-    [Obsolete("Use AddTcpPayloadEncryption. This name will be removed in a future release.")]
-    public static IServiceCollection AddAdvancedEncryption(this IServiceCollection services, Action<AdvancedEncryptionOptions>? configureOptions = null)
-    {
-        if (configureOptions is null)
-            return services.AddTcpPayloadEncryption();
-
-        return services.AddTcpPayloadEncryption(o =>
-        {
-            var legacy = new AdvancedEncryptionOptions();
-            configureOptions(legacy);
-            o.Key = legacy.Key;
-            o.Iv = legacy.Iv;
-        });
-    }
 }

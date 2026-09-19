@@ -29,8 +29,6 @@ services.AddTcpPayloadEncryption(o =>
 | `AesKey` | Record struct `(Key, Iv)` |
 | `ServiceCollectionExtensions.AddTcpPayloadEncryption` | DI registration |
 
-Obsolete `IAdvancedEncryptionService` / `AddAdvancedEncryption` aliases remain for migration.
-
 ## Related
 
 | Package | Role |

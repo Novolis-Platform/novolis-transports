@@ -54,7 +54,6 @@ new OidcAuthentication(new OidcAuthenticationConfiguration { /* ... */ }, tokenP
 | `OidcAuthentication` / `OidcAuthenticationConfiguration` | OIDC bearer tokens |
 | `OidcTokenProvider` | Default `IOidcTokenProvider` |
 | `IOidcTokenProvider` | Token acquisition port |
-| `IOicdTokenProvider` | Obsolete typo alias → `IOidcTokenProvider` |
 
 ## Related
 

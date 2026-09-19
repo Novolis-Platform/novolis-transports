@@ -67,8 +67,6 @@ Presentation helpers (no PacketDotNet in public signatures): `DevicePacketExtens
 | `WireFishCaptureHealth` | `(IsReady, Message)` |
 | `PacketPresentation` / `PacketDetailNode` | UI-friendly formatting and protocol tree |
 
-Obsolete `Frank.WireFish.*` type aliases ship for one preview cycle.
-
 ## Dogfooding / apps
 
 Used by **WireFishViewer** (`novolis-dogfooding`) for live capture UI.
@@ -86,5 +84,5 @@ Used by **WireFishViewer** (`novolis-dogfooding`) for live capture UI.
 
 ## Support
 
-Pre-release. Legacy `Frank.WireFish` type aliases are obsolete.
+Pre-release.
 

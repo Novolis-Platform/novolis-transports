@@ -49,8 +49,6 @@ Use `Novolis.Transports.Http.Extensions` for typed REST helpers (`GetAsync<T>`, 
 | `AuthenticationBuilder` | Fluent auth registration |
 | `EnricherBuilder` | Fluent enricher registration |
 
-Obsolete `AddFrankHttp*` aliases remain for migration.
-
 ## Related
 
 | Package | Role |

@@ -13,7 +13,7 @@
     <!-- ProjectRef consumers need DefensiveProgrammingFramework beside this assembly. -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <!-- Legacy port: nullable/docs noise from Frank.TorrentClient; tighten over time. -->
-    <NoWarn>$(NoWarn);1591;1574;8600;8625;8604;8602;8618;8603;8622;8601;1658;1584;1570;8765;8767;CS8618;CS8625;CS8602;CS8603;CS8604;CS8622;SYSLIB0014</NoWarn>
+    <NoWarn>$(NoWarn);1591;1574;8600;8625;8604;8602;8618;8603;8622;8601;1658;1584;1570;8765;8767;CS8618;CS8625;CS8602;CS8603;CS8604;CS8622</NoWarn>
   </PropertyGroup>
   <!-- No third-party deps: legacy DefensiveProgrammingFramework replaced by Internal/DefensiveCompat.cs -->
 </Project>

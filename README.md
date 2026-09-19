@@ -92,8 +92,6 @@ services.AddNovolisWireFish(
     o => o.BpfFilter = "tcp port 443");
 ```
 
-Legacy `AddFrankHttp` and `Frank.WireFish` APIs remain as obsolete aliases.
-
 ## Documentation
 
 - [Getting started](docs/getting-started.md)

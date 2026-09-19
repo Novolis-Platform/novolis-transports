@@ -83,34 +83,4 @@ public static class ServiceCollectionExtensions
         configureAuthentications(authenticationBuilder);
         return services;
     }
-
-    /// <inheritdoc cref="AddNovolisHttpAuthentication{T}"/>
-    [Obsolete("Use AddNovolisHttpAuthentication. This Frank-prefixed name will be removed in a future release.")]
-    public static IServiceCollection AddFrankHttpAuthentication<T>(this IServiceCollection services) where T : class, IHttpAuthentication
-        => services.AddNovolisHttpAuthentication<T>();
-
-    /// <inheritdoc cref="AddNovolisHttpRequestEnricher{T}"/>
-    [Obsolete("Use AddNovolisHttpRequestEnricher. This Frank-prefixed name will be removed in a future release.")]
-    public static IServiceCollection AddFrankHttpRequestEnricher<T>(this IServiceCollection services) where T : class, IRequestEnricher
-        => services.AddNovolisHttpRequestEnricher<T>();
-
-    /// <inheritdoc cref="AddNovolisHttp(IServiceCollection)"/>
-    [Obsolete("Use AddNovolisHttp. This Frank-prefixed name will be removed in a future release.")]
-    public static IServiceCollection AddFrankHttp(this IServiceCollection services)
-        => services.AddNovolisHttp();
-
-    /// <inheritdoc cref="AddNovolisHttp(IServiceCollection, Action{IEnricherBuilder})"/>
-    [Obsolete("Use AddNovolisHttp. This Frank-prefixed name will be removed in a future release.")]
-    public static IServiceCollection AddFrankHttp(this IServiceCollection services, Action<IEnricherBuilder> configureEnrichers)
-        => services.AddNovolisHttp(configureEnrichers);
-
-    /// <inheritdoc cref="AddNovolisHttp(IServiceCollection, Action{IAuthenticationBuilder})"/>
-    [Obsolete("Use AddNovolisHttp. This Frank-prefixed name will be removed in a future release.")]
-    public static IServiceCollection AddFrankHttp(this IServiceCollection services, Action<IAuthenticationBuilder> configureAuthentications)
-        => services.AddNovolisHttp(configureAuthentications);
-
-    /// <inheritdoc cref="AddNovolisHttp(IServiceCollection, Action{IEnricherBuilder}, Action{IAuthenticationBuilder})"/>
-    [Obsolete("Use AddNovolisHttp. This Frank-prefixed name will be removed in a future release.")]
-    public static IServiceCollection AddFrankHttp(this IServiceCollection services, Action<IEnricherBuilder> configureEnrichers, Action<IAuthenticationBuilder> configureAuthentications)
-        => services.AddNovolisHttp(configureEnrichers, configureAuthentications);
 }
