@@ -1,6 +1,15 @@
 # Novolis.Transports.Tcp.Cryptography
 
-AES payload encryption for Novolis TCP client/server. Registered automatically by `AddTcpClient` and TCP server setup; can also be registered explicitly.
+Legacy internal AES-CBC payload helper for Novolis TCP client/server.
+
+## Security status
+
+Do not use this component for new traffic, secure text, or an end-to-end protocol. It lacks
+authenticated encryption, nonce lifecycle, replay protection, key agreement, peer identity, and
+stream framing guarantees. Registration does not by itself protect a TCP send or receive path.
+
+New secure text uses `Novolis.Security.SecureText` and `Novolis.Messaging.SecureText`, with
+authenticated AES-GCM envelopes above the delivery transport.
 
 ## Install
 

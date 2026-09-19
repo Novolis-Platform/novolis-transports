@@ -72,7 +72,8 @@ TCP and HTTP client libraries for the Novolis platform.
 | `Novolis.Transports.WireFish` | Live packet capture (SharpPcap) via `Novolis.Messaging.Channels` |
 | `Novolis.Transports.LocalIpc` | Framed local IPC over named pipes and Unix domain sockets |
 
-`Novolis.Transports.Tcp.Cryptography` provides internal TCP payload AES helpers (`AddTcpPayloadEncryption`).
+`Novolis.Transports.Tcp.Cryptography` is a legacy internal AES-CBC helper. It is not authenticated
+transport security and must not be used for new or end-to-end protected traffic.
 
 `Novolis.Transports.LocalIpc` is the reusable transport layer used by the live audio host/client stack. It is intentionally domain-agnostic so other Novolis apps can reuse the same framed request/response and event streaming model.
 
