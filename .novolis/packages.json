@@ -1,5 +1,21 @@
 {
   "packages": {
+    "Novolis.Transports.Framing": {
+      "project": "src/Novolis.Transports.Framing/Novolis.Transports.Framing.csproj",
+      "paths": ["src/Novolis.Transports.Framing/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Datagrams": {
+      "project": "src/Novolis.Transports.Datagrams/Novolis.Transports.Datagrams.csproj",
+      "paths": ["src/Novolis.Transports.Datagrams/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Discovery": {
+      "project": "src/Novolis.Transports.Discovery/Novolis.Transports.Discovery.csproj",
+      "paths": ["src/Novolis.Transports.Discovery/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Tailscale": {
+      "project": "src/Novolis.Transports.Tailscale/Novolis.Transports.Tailscale.csproj",
+      "paths": ["src/Novolis.Transports.Tailscale/**", "Novolis.Transports.slnx"]
+    },
     "Novolis.Transports.Tcp.Server": {
       "project": "src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj",
       "paths": ["src/Novolis.Transports.Tcp.Server/**", "src/Novolis.Transports.Tcp.Cryptography/**", "Novolis.Transports.slnx"]

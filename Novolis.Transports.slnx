@@ -1,5 +1,9 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Novolis.Transports.Framing/Novolis.Transports.Framing.csproj" />
+    <Project Path="src/Novolis.Transports.Datagrams/Novolis.Transports.Datagrams.csproj" />
+    <Project Path="src/Novolis.Transports.Discovery/Novolis.Transports.Discovery.csproj" />
+    <Project Path="src/Novolis.Transports.Tailscale/Novolis.Transports.Tailscale.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Abstractions/Novolis.Transports.Tcp.Abstractions.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Cryptography/Novolis.Transports.Tcp.Cryptography.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj" />
