@@ -1,5 +1,5 @@
 using System.Net;
-using System.Net.Sockets;
+using Novolis.Transports.Udp;
 
 namespace Novolis.Transports.Discovery;
 
@@ -17,10 +17,12 @@ public sealed class DiscoveryScanner
         ArgumentNullException.ThrowIfNull(endpoint);
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(timeout, TimeSpan.Zero);
 
-        using var client = new UdpClient
-        {
-            EnableBroadcast = true,
-        };
+        await using var client = new UdpDatagramChannel(
+            new IPEndPoint(IPAddress.Any, 0),
+            new UdpDatagramChannelOptions
+            {
+                EnableBroadcast = true,
+            });
         await client.SendAsync(
             DiscoveryCodec.EncodeProbe(probeToken),
             endpoint,
@@ -30,17 +32,18 @@ public sealed class DiscoveryScanner
         timeoutCancellation.CancelAfter(timeout);
         while (!timeoutCancellation.IsCancellationRequested)
         {
-            UdpReceiveResult result;
+            DiscoveryBeacon? beacon;
             try
             {
-                result = await client.ReceiveAsync(timeoutCancellation.Token).ConfigureAwait(false);
+                var result = await client.ReceiveAsync(timeoutCancellation.Token)
+                    .ConfigureAwait(false);
+                beacon = DiscoveryCodec.TryDecodeBeacon(result.Payload);
             }
             catch (OperationCanceledException) when (timeoutCancellation.IsCancellationRequested)
             {
                 yield break;
             }
 
-            var beacon = DiscoveryCodec.TryDecodeBeacon(result.Buffer);
             if (beacon is not null)
                 yield return beacon;
         }

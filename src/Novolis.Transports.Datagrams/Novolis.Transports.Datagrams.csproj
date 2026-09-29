@@ -7,5 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
+    <ProjectReference Include="..\Novolis.Transports.Udp\Novolis.Transports.Udp.csproj" />
   </ItemGroup>
 </Project>

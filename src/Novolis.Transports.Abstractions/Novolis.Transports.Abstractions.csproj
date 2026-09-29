@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Novolis.Transports.Discovery</PackageId>
+    <PackageId>Novolis.Transports.Abstractions</PackageId>
     <IsPackable>true</IsPackable>
-    <Description>Generic UDP discovery beacon primitives.</Description>
+    <Description>Transport-neutral connection, stream, datagram, and capability contracts.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <ProjectReference Include="..\Novolis.Transports.Udp\Novolis.Transports.Udp.csproj" />
   </ItemGroup>
 </Project>

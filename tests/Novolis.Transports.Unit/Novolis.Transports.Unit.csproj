@@ -10,6 +10,10 @@
     <PackageReference Include="TUnit" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../../src/Novolis.Transports.Abstractions/Novolis.Transports.Abstractions.csproj" />
+    <ProjectReference Include="../../src/Novolis.Transports.Tcp/Novolis.Transports.Tcp.csproj" />
+    <ProjectReference Include="../../src/Novolis.Transports.Udp/Novolis.Transports.Udp.csproj" />
+    <ProjectReference Include="../../src/Novolis.Transports.Quic/Novolis.Transports.Quic.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Http.Abstractions/Novolis.Transports.Http.Abstractions.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Http.Authentication/Novolis.Transports.Http.Authentication.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Http.Extensions/Novolis.Transports.Http.Extensions.csproj" />

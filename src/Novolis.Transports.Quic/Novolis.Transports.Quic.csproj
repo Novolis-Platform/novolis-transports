@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Novolis.Transports.Quic</PackageId>
+    <IsPackable>true</IsPackable>
+    <Description>Secure QUIC stream connections and listeners for Novolis transports.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <ProjectReference Include="..\Novolis.Transports.Abstractions\Novolis.Transports.Abstractions.csproj" />
+  </ItemGroup>
+</Project>
