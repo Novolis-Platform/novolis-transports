@@ -36,7 +36,7 @@ public sealed class UdpDatagramChannel : ITransportDatagramChannel
         _received = Channel.CreateBounded<TransportDatagram>(
             new BoundedChannelOptions(_options.ReceiveQueueCapacity)
             {
-                FullMode = BoundedChannelFullMode.DropWrite,
+                FullMode = _options.ReceiveQueueFullMode,
                 SingleReader = false,
                 SingleWriter = true,
             });

@@ -26,11 +26,20 @@ public static class LocalIpcFrameCodec
             writer.Flush();
         }
 
-        var payload = buffer.ToArray();
-        Span<byte> lengthPrefix = stackalloc byte[4];
-        BinaryPrimitives.WriteInt32LittleEndian(lengthPrefix, payload.Length);
-        stream.Write(lengthPrefix);
-        await stream.WriteAsync(payload, cancellationToken).ConfigureAwait(false);
+        if (!buffer.TryGetBuffer(out var segment))
+            throw new InvalidOperationException("The IPC frame buffer is not exposable.");
+
+        var length = checked((int)buffer.Length);
+        var lengthPrefix = new byte[4];
+        BinaryPrimitives.WriteInt32LittleEndian(lengthPrefix, length);
+        await stream.WriteAsync(lengthPrefix, cancellationToken).ConfigureAwait(false);
+        await stream.WriteAsync(
+                new ReadOnlyMemory<byte>(
+                    segment.Array!,
+                    segment.Offset,
+                    length),
+                cancellationToken)
+            .ConfigureAwait(false);
         await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
 
