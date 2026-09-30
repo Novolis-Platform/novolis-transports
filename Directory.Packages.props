@@ -19,6 +19,6 @@
     <PackageVersion Include="Novolis.Messaging.Channels" Version="2026.1.*" />
     <PackageVersion Include="SharpPcap" Version="6.3.1" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.23.0" />
-    <PackageVersion Include="TUnit" Version="1.68.17" />
+    <PackageVersion Include="TUnit" Version="1.72.4" />
   </ItemGroup>
 </Project>
