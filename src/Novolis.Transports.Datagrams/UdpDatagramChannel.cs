@@ -43,6 +43,3 @@ public sealed class UdpDatagramChannel : IAsyncDisposable
     /// <inheritdoc />
     public ValueTask DisposeAsync() => _inner.DisposeAsync();
 }
-
-/// <summary>A received UDP payload and its sender.</summary>
-public sealed record UdpDatagram(IPEndPoint RemoteEndpoint, byte[] Payload);
