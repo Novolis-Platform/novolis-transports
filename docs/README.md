@@ -1,6 +1,6 @@
 # novolis-transports documentation
 
-Transport libraries: HTTP, local IPC, torrent, and related adapters.
+Transport libraries: local IPC, TCP, torrent, and related adapters. HTTP request documents and execution live in [novolis-http](https://github.com/Novolis-Platform/novolis-http).
 
 Published docs: [https://novolis-platform.github.io/.github/novolis-transports/](https://novolis-platform.github.io/.github/novolis-transports/)
 
@@ -16,10 +16,6 @@ Published docs: [https://novolis-platform.github.io/.github/novolis-transports/]
 
 | Package |
 | --- |
-| `Novolis.Transports.Http` |
-| `Novolis.Transports.Http.Abstractions` |
-| `Novolis.Transports.Http.Authentication` |
-| `Novolis.Transports.Http.Extensions` |
 | `Novolis.Transports.LocalIpc` |
 | `Novolis.Transports.Tcp.Abstractions` |
 | `Novolis.Transports.Tcp.Client` |

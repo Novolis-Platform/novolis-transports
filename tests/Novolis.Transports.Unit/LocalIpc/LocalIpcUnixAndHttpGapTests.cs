@@ -1,6 +1,3 @@
-using Novolis.Transports.Http;
-using Novolis.Transports.Http.Extensions;
-using Novolis.Transports.Http.Tests.Infrastructure;
 using Novolis.Transports.LocalIpc;
 
 namespace Novolis.Transports.Unit.LocalIpc;

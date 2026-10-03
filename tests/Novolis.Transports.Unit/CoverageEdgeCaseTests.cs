@@ -1,9 +1,6 @@
 using System.Buffers.Binary;
 using System.Text;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Novolis.Transports.Http.Authentication.Oidc;
 using Novolis.Transports.LocalIpc;
 using Novolis.Transports.Tcp.Abstractions;
 using Novolis.Transports.Tcp.Cryptography;
@@ -114,42 +111,6 @@ public sealed class CoverageEdgeCaseTests
         await Assert.That(provider.GetRequiredService<ITcpPayloadEncryptor>()).IsNotNull();
     }
 
-    [Test]
-    public async Task Oidc_TokenProvider_Uses_Prepopulated_Cache()
-    {
-        using var cache = new MemoryCache(new MemoryCacheOptions());
-        cache.Set("oidc-token", "cached-token");
-        using var http = new HttpClient(new FailingHandler());
-        var options = Options.Create(new OidcAuthenticationConfiguration
-        {
-            ClientId = "client",
-            ClientSecret = "secret",
-            Scope = "scope",
-            TokenEndpoint = null,
-        });
-
-        var token = await new OidcTokenProvider(http, options, cache).GetTokenAsync(CancellationToken.None);
-
-        await Assert.That(token).IsEqualTo("cached-token");
-    }
-
-    [Test]
-    public async Task Oidc_TokenProvider_Rejects_Empty_Json_Body()
-    {
-        using var cache = new MemoryCache(new MemoryCacheOptions());
-        using var http = new HttpClient(new EmptyJsonHandler());
-        var options = Options.Create(new OidcAuthenticationConfiguration
-        {
-            ClientId = "client",
-            ClientSecret = "secret",
-            Scope = "scope",
-            TokenEndpoint = "https://identity.test/token",
-        });
-
-        await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await new OidcTokenProvider(http, options, cache).GetTokenAsync(CancellationToken.None));
-    }
-
     private static MemoryStream BuildEncodedFrame(int payloadLength, byte[] body)
     {
         using var payload = new MemoryStream();
@@ -170,24 +131,5 @@ public sealed class CoverageEdgeCaseTests
         stream.Write(encoded);
         stream.Position = 0;
         return stream;
-    }
-
-    private sealed class FailingHandler : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request,
-            CancellationToken cancellationToken) =>
-            throw new InvalidOperationException("HTTP should not be called for a cached token.");
-    }
-
-    private sealed class EmptyJsonHandler : HttpMessageHandler
-    {
-        protected override Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request,
-            CancellationToken cancellationToken) =>
-            Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
-            {
-                Content = new StringContent("null", Encoding.UTF8, "application/json"),
-            });
     }
 }

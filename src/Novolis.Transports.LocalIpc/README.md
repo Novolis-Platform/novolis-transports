@@ -88,5 +88,5 @@ Used by Live Studio audio host, Novolis Agent surface, Avalonia Agent MCP UI, an
 |---------|------|
 | `Novolis.Agent.Surface` | Agent host IPC + typed message helpers |
 | `Novolis.Avalonia.Agent.Protocol` | UI agent client over default endpoint |
-| `Novolis.Transports.Http` | Remote HTTP transport (complementary) |
+| `Novolis.Http.Client` | Remote HTTP execution (complementary) |
 

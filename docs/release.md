@@ -8,10 +8,6 @@ Published docs: [https://novolis-platform.github.io/.github/novolis-transports/]
 
 ## Packages
 
-- `Novolis.Transports.Http`
-- `Novolis.Transports.Http.Abstractions`
-- `Novolis.Transports.Http.Authentication`
-- `Novolis.Transports.Http.Extensions`
 - `Novolis.Transports.LocalIpc`
 - `Novolis.Transports.Tcp.Abstractions`
 - `Novolis.Transports.Tcp.Client`

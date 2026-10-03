@@ -53,7 +53,7 @@ Used by `Novolis.Avalonia.Torrent.TorrentSessionPanel` and **TorrentLab** smoke 
 
 | Package | Role |
 |---------|------|
-| `Novolis.Transports.Http` | HTTP tracker communication helpers |
+| `Novolis.Http.Client` | HTTP tracker communication helpers |
 | `Novolis.Avalonia.Torrent` | UI torrent session panel |
 
 ## More documentation

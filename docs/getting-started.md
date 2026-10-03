@@ -1,6 +1,6 @@
 # Getting started
 
-Transport libraries: HTTP, local IPC, torrent, and related adapters.
+Transport libraries: local IPC, TCP, torrent, and related adapters. For HTTP request documents and execution, see [novolis-http](https://github.com/Novolis-Platform/novolis-http).
 
 Published guide: [https://novolis-platform.github.io/.github/novolis-transports/](https://novolis-platform.github.io/.github/novolis-transports/)
 
@@ -13,12 +13,6 @@ Configure GPR once from a sibling `novolis-governance` checkout:
 
 ```powershell
 pwsh -File d:\novolis\novolis-governance\scripts\configure-gpr-user-nuget.ps1
-```
-
-## Install
-
-```bash
-dotnet add package Novolis.Transports.Http
 ```
 
 Local multi-repo iteration uses ProjectReference mode via `d:\novolis\Novolis.Platform.slnx` — never a local NuGet folder feed.

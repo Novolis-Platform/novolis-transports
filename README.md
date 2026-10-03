@@ -41,10 +41,6 @@
 
 | Package | Install | Package README |
 |---------|---------|----------------|
-| `Novolis.Transports.Http` | `dotnet add package Novolis.Transports.Http` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Http/README.md) |
-| `Novolis.Transports.Http.Abstractions` | `dotnet add package Novolis.Transports.Http.Abstractions` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Http.Abstractions/README.md) |
-| `Novolis.Transports.Http.Authentication` | `dotnet add package Novolis.Transports.Http.Authentication` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Http.Authentication/README.md) |
-| `Novolis.Transports.Http.Extensions` | `dotnet add package Novolis.Transports.Http.Extensions` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Http.Extensions/README.md) |
 | `Novolis.Transports.LocalIpc` | `dotnet add package Novolis.Transports.LocalIpc` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.LocalIpc/README.md) |
 | `Novolis.Transports.Tcp.Abstractions` | `dotnet add package Novolis.Transports.Tcp.Abstractions` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Abstractions/README.md) |
 | `Novolis.Transports.Tcp.Client` | `dotnet add package Novolis.Transports.Tcp.Client` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Client/README.md) |
@@ -65,10 +61,6 @@ TCP and HTTP client libraries for the Novolis platform.
 |---------|---------|
 | `Novolis.Transports.Tcp.Client` | TCP client |
 | `Novolis.Transports.Tcp.Server` | TCP server hosting |
-| `Novolis.Transports.Http` | REST client factory and DI (`AddNovolisHttp`) |
-| `Novolis.Transports.Http.Abstractions` | HTTP authentication and enricher contracts |
-| `Novolis.Transports.Http.Authentication` | Basic, API key, and OIDC client auth |
-| `Novolis.Transports.Http.Extensions` | REST convenience extensions |
 | `Novolis.Transports.WireFish` | Live packet capture (SharpPcap) via `Novolis.Messaging.Channels` |
 | `Novolis.Transports.LocalIpc` | Framed local IPC over named pipes and Unix domain sockets |
 
@@ -80,7 +72,7 @@ transport security and must not be used for new or end-to-end protected traffic.
 ## Install
 
 ```bash
-dotnet add package Novolis.Transports.Http --version 0.1.0-preview.1
+dotnet add package Novolis.Http.Client --version 2026.1.*
 ```
 
 ## Quick start
