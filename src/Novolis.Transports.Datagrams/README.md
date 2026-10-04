@@ -1,7 +1,8 @@
 # Novolis.Transports.Datagrams
 
-UDP datagram send and receive primitives. Payload meaning and reliability
-policy belong to the consuming protocol.
+UDP datagram send and receive primitives plus bounded fragment reassembly.
+Payload meaning, authentication, and reliability policy belong to the
+consuming protocol.
 
 ## Install
 

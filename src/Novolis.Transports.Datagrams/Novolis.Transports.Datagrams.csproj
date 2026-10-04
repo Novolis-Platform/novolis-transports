@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PackageId>Novolis.Transports.Datagrams</PackageId>
     <IsPackable>true</IsPackable>
-    <Description>UDP datagram channel primitives.</Description>
+    <Description>UDP datagram channel and fragment reassembly primitives.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
