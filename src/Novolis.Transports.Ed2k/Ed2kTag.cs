@@ -148,6 +148,11 @@ public static class Ed2kTagCodec
     public static IReadOnlyList<Ed2kTag> Decode(ReadOnlySpan<byte> data)
     {
         var reader = new Ed2kBinaryReader(data);
+        return ReadTags(ref reader);
+    }
+
+    internal static IReadOnlyList<Ed2kTag> ReadTags(ref Ed2kBinaryReader reader)
+    {
         var count = reader.ReadUInt32();
         if (count > 100_000)
             throw new InvalidDataException("The eD2k tag count is too large.");

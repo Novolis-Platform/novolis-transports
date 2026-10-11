@@ -59,6 +59,8 @@ internal ref struct Ed2kBinaryReader
 
     public int Remaining => this.data.Length - this.offset;
 
+    public int Position => this.offset;
+
     public byte ReadByte()
     {
         this.Require(1);
