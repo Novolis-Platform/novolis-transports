@@ -10,7 +10,7 @@ public sealed class Ed2kWireRoundTripTests
     {
         var vectors = new Dictionary<string, string>
         {
-            [""] = "d41d8cd98f00b204e9800998ecf8427e",
+            [""] = "31d6cfe0d16ae931b73c59d7e0c089c0",
             ["a"] = "bde52cb31de33e46245e05fbdbd6fb24",
             ["abc"] = "a448017aaf21d8525fc10ae87aa6729d",
             ["message digest"] = "d9130a8164549fe818874806e1c7014b",
@@ -32,7 +32,10 @@ public sealed class Ed2kWireRoundTripTests
 
         await Assert.That(encoded).IsEquivalentTo(
             new byte[] { 0xE3, 0x03, 0x00, 0x00, 0x00, 0x33, 0xAA, 0xBB });
-        await Assert.That(Ed2kFrameCodec.DecodeTcp(encoded)).IsEqualTo(frame);
+        var decoded = Ed2kFrameCodec.DecodeTcp(encoded);
+        await Assert.That(decoded.Protocol).IsEqualTo(frame.Protocol);
+        await Assert.That(decoded.Opcode).IsEqualTo(frame.Opcode);
+        await Assert.That(decoded.Payload).IsEquivalentTo(frame.Payload);
     }
 
     [Test]
@@ -42,7 +45,9 @@ public sealed class Ed2kWireRoundTripTests
         var decoded = Ed2kFrameCodec.TryDecodeUdp(frame.EncodeUdp(), out var roundTrip);
 
         await Assert.That(decoded).IsTrue();
-        await Assert.That(roundTrip).IsEqualTo(frame);
+        await Assert.That(roundTrip!.Protocol).IsEqualTo(frame.Protocol);
+        await Assert.That(roundTrip.Opcode).IsEqualTo(frame.Opcode);
+        await Assert.That(roundTrip.Payload).IsEquivalentTo(frame.Payload);
     }
 
     [Test]

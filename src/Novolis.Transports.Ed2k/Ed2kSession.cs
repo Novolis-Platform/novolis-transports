@@ -97,8 +97,23 @@ public sealed class Ed2kSession : IAsyncDisposable, IDisposable
             if (frame is null)
                 throw new EndOfStreamException("The eD2k server closed the search session.");
             if (frame.Opcode == Ed2kProtocol.SearchResults)
-                return Ed2kMessages.ParseSearchResults(frame.Payload);
+            {
+                var payload = DecodePayload(frame);
+                return Ed2kMessages.ParseSearchResults(payload);
+            }
         }
+    }
+
+    public async Task OfferFilesAsync(
+        IReadOnlyList<Ed2kSharedFile> files,
+        CancellationToken cancellationToken = default)
+    {
+        var stream = this.RequireServerStream();
+        await WriteAsync(
+                stream,
+                Ed2kMessages.CreateOfferFiles(files).EncodeTcp(),
+                cancellationToken)
+            .ConfigureAwait(false);
     }
 
     public async Task<IReadOnlyList<Ed2kSource>> GetSourcesAsync(
@@ -119,7 +134,10 @@ public sealed class Ed2kSession : IAsyncDisposable, IDisposable
             if (frame is null)
                 throw new EndOfStreamException("The eD2k server closed the source session.");
             if (frame.Opcode == Ed2kProtocol.Sources)
-                return Ed2kMessages.ParseSources(frame.Payload);
+            {
+                var payload = DecodePayload(frame);
+                return Ed2kMessages.ParseSources(payload);
+            }
         }
     }
 
@@ -140,46 +158,15 @@ public sealed class Ed2kSession : IAsyncDisposable, IDisposable
             (byte)((result.ClientId >> 16) & 0xFF),
             (byte)((result.ClientId >> 24) & 0xFF)
         ]);
-        using var peer = new TcpClient();
-        await peer.ConnectAsync(address, result.Port, cancellationToken).ConfigureAwait(false);
-        await using var stream = peer.GetStream();
-
-        var helloWriter = new Ed2kBinaryWriter();
-        helloWriter.WriteBytes(this.userHash);
-        helloWriter.WriteUInt16(checked((ushort)this.ListenPort));
-        helloWriter.WriteBytes(Ed2kTagCodec.Encode(
-        [
-            new Ed2kTag(Ed2kTagIds.Name, this.clientName),
-            new Ed2kTag(Ed2kTagIds.ClientVersion, 0x3Cu)
-        ]));
-        await WriteAsync(
-                stream,
-                new Ed2kFrame(Ed2kProtocol.EmuleProtocol, Ed2kProtocol.PeerHello, helloWriter.ToArray())
-                    .EncodeTcp(),
+        await Ed2kPeerSession.DownloadAsync(
+                new IPEndPoint(address, result.Port),
+                result.FileId,
+                result.Size,
+                destinationPath,
+                this.userHash,
+                this.ListenPort,
                 cancellationToken)
             .ConfigureAwait(false);
-
-        var requestWriter = new Ed2kBinaryWriter();
-        requestWriter.WriteBytes(result.FileId.Bytes);
-        await WriteAsync(
-                stream,
-                new Ed2kFrame(Ed2kProtocol.EmuleProtocol, Ed2kProtocol.PeerFileRequest, requestWriter.ToArray())
-                    .EncodeTcp(),
-                cancellationToken)
-            .ConfigureAwait(false);
-
-        await using var output = File.Create(destinationPath);
-        var frame = await Ed2kFrameCodec.ReadTcpAsync(stream, cancellationToken)
-            .ConfigureAwait(false);
-        if (frame is null || frame.Opcode != Ed2kProtocol.PeerSendingPart)
-            throw new InvalidDataException("The eD2k peer did not send a part.");
-        var reader = new Ed2kBinaryReader(frame.Payload);
-        _ = reader.ReadBytes(16);
-        var start = reader.ReadUInt32();
-        var end = reader.ReadUInt32();
-        var bytes = reader.ReadBytes(checked((int)(end - start + 1)));
-        await output.WriteAsync(bytes, cancellationToken).ConfigureAwait(false);
-        await output.FlushAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public void Dispose()
@@ -210,6 +197,13 @@ public sealed class Ed2kSession : IAsyncDisposable, IDisposable
     {
         return this.serverStream
                ?? throw new InvalidOperationException("Connect to an eD2k server first.");
+    }
+
+    private static byte[] DecodePayload(Ed2kFrame frame)
+    {
+        return frame.Protocol == Ed2kProtocol.ZlibProtocol
+            ? Ed2kCompression.Decompress(frame.Payload)
+            : frame.Payload;
     }
 
     private async ValueTask DisposeServerAsync()

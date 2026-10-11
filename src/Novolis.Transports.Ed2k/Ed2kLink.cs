@@ -1,11 +1,5 @@
 namespace Novolis.Transports.Ed2k;
 
-public enum Ed2kLinkKind
-{
-    File,
-    Server
-}
-
 /// <summary>
 /// A standard ed2k file or server link.
 /// </summary>

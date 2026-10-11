@@ -47,7 +47,7 @@ public static class Ed2kMessages
         writer.WriteUInt16(checked((ushort)bytes.Length));
         writer.WriteBytes(bytes);
         return new Ed2kFrame(
-            Ed2kProtocol.EmuleProtocol,
+            Ed2kProtocol.EdonkeyProtocol,
             Ed2kProtocol.SearchRequest,
             writer.ToArray());
     }
@@ -57,8 +57,32 @@ public static class Ed2kMessages
         var writer = new Ed2kBinaryWriter();
         writer.WriteBytes(fileId.Bytes);
         return new Ed2kFrame(
-            Ed2kProtocol.EmuleProtocol,
+            Ed2kProtocol.EdonkeyProtocol,
             Ed2kProtocol.GetSources,
+            writer.ToArray());
+    }
+
+    public static Ed2kFrame CreateOfferFiles(IReadOnlyList<Ed2kSharedFile> files)
+    {
+        ArgumentNullException.ThrowIfNull(files);
+        var writer = new Ed2kBinaryWriter();
+        writer.WriteUInt32(checked((uint)files.Count));
+        foreach (var file in files)
+        {
+            writer.WriteBytes(file.FileId.Bytes);
+            var tags = new List<Ed2kTag>
+            {
+                new(Ed2kTagIds.Name, file.Name),
+                new(Ed2kTagIds.Size, checked((uint)file.Size))
+            };
+            if (file.AdditionalTags is not null)
+                tags.AddRange(file.AdditionalTags);
+            writer.WriteBytes(Ed2kTagCodec.Encode(tags));
+        }
+
+        return new Ed2kFrame(
+            Ed2kProtocol.EdonkeyProtocol,
+            Ed2kProtocol.OfferFiles,
             writer.ToArray());
     }
 

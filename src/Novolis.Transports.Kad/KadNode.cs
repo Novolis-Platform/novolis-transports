@@ -72,6 +72,49 @@ public sealed class KadNode : IAsyncDisposable, IDisposable
         return KadWireCodec.DecodeSearchResponse(response.Payload);
     }
 
+    public async Task<IReadOnlyList<KadContact>> LookupAsync(
+        KadId target,
+        IEnumerable<KadContact> seeds,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(seeds);
+        var pending = seeds
+            .GroupBy(contact => contact.Id)
+            .Select(group => group.First())
+            .Take(KadRoutingTable.Alpha)
+            .ToList();
+        var discovered = new Dictionary<KadId, KadContact>();
+        foreach (var seed in pending)
+            discovered[seed.Id] = seed;
+
+        while (pending.Count > 0)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var batch = pending.Take(KadRoutingTable.Alpha).ToArray();
+            pending.RemoveRange(0, batch.Length);
+            var responses = await Task.WhenAll(
+                    batch.Select(contact => LookupContactAsync(
+                        target,
+                        contact,
+                        cancellationToken)))
+                .ConfigureAwait(false);
+            foreach (var response in responses)
+            {
+                foreach (var contact in response)
+                {
+                    this.RoutingTable.TryAdd(contact);
+                    if (discovered.TryAdd(contact.Id, contact))
+                        pending.Add(contact);
+                }
+            }
+        }
+
+        return discovered.Values
+            .OrderBy(contact => this.NodeId.CompareDistance(contact.Id, target))
+            .Take(KadRoutingTable.BucketSize)
+            .ToArray();
+    }
+
     public async Task PublishAsync(
         Ed2kFileId fileId,
         IReadOnlyList<KadSource> sources,
@@ -88,6 +131,23 @@ public sealed class KadNode : IAsyncDisposable, IDisposable
             .ConfigureAwait(false);
         if (response.Opcode is not (KadProtocol.PublishSourceResponse or KadProtocol.PublishSourceRequest))
             throw new InvalidDataException($"Unexpected Kad publish opcode 0x{response.Opcode:X2}.");
+    }
+
+    public async Task PublishKeywordAsync(
+        Ed2kFileId fileId,
+        string keyword,
+        KadContact contact,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(contact);
+        var payload = KadWireCodec.EncodePublishKeyword(this.NodeId, fileId, keyword);
+        var response = await SendAndReceiveAsync(
+                new KadPacket(KadProtocol.Header, KadProtocol.PublishKeyRequest, payload),
+                contact.Endpoint,
+                cancellationToken)
+            .ConfigureAwait(false);
+        if (response.Opcode is not (KadProtocol.PublishKeyResponse or KadProtocol.PublishKeyRequest))
+            throw new InvalidDataException($"Unexpected Kad keyword opcode 0x{response.Opcode:X2}.");
     }
 
     public void Dispose()
@@ -112,5 +172,23 @@ public sealed class KadNode : IAsyncDisposable, IDisposable
             .ConfigureAwait(false);
         var received = await this.udp.ReceiveAsync(cancellationToken).ConfigureAwait(false);
         return KadPacketCodec.Decode(received.Buffer);
+    }
+
+    private async Task<IReadOnlyList<KadContact>> LookupContactAsync(
+        KadId target,
+        KadContact contact,
+        CancellationToken cancellationToken)
+    {
+        var response = await SendAndReceiveAsync(
+                new KadPacket(
+                    KadProtocol.Header,
+                    KadProtocol.NodeRequest,
+                    KadWireCodec.EncodeNodeRequest(this.NodeId, target)),
+                contact.Endpoint,
+                cancellationToken)
+            .ConfigureAwait(false);
+        if (response.Opcode != KadProtocol.NodeResponse)
+            throw new InvalidDataException($"Unexpected Kad lookup opcode 0x{response.Opcode:X2}.");
+        return KadWireCodec.DecodeNodeResponse(response.Payload);
     }
 }

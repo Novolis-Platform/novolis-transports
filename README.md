@@ -42,6 +42,8 @@
 | Package | Install | Package README |
 |---------|---------|----------------|
 | `Novolis.Transports.LocalIpc` | `dotnet add package Novolis.Transports.LocalIpc` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.LocalIpc/README.md) |
+| `Novolis.Transports.Ed2k` | `dotnet add package Novolis.Transports.Ed2k` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Ed2k/README.md) |
+| `Novolis.Transports.Kad` | `dotnet add package Novolis.Transports.Kad` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Kad/README.md) |
 | `Novolis.Transports.Tcp.Abstractions` | `dotnet add package Novolis.Transports.Tcp.Abstractions` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Abstractions/README.md) |
 | `Novolis.Transports.Tcp.Client` | `dotnet add package Novolis.Transports.Tcp.Client` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Client/README.md) |
 | `Novolis.Transports.Tcp.Server` | `dotnet add package Novolis.Transports.Tcp.Server` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Server/README.md) |

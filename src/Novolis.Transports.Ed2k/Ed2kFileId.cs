@@ -7,6 +7,7 @@ namespace Novolis.Transports.Ed2k;
 /// </summary>
 public readonly struct Ed2kFileId : IEquatable<Ed2kFileId>
 {
+    private static readonly byte[] ZeroValue = new byte[16];
     private readonly byte[] value;
 
     public Ed2kFileId(ReadOnlySpan<byte> value)
@@ -17,7 +18,7 @@ public readonly struct Ed2kFileId : IEquatable<Ed2kFileId>
         this.value = value.ToArray();
     }
 
-    public ReadOnlySpan<byte> Bytes => this.value ?? [];
+    public ReadOnlySpan<byte> Bytes => this.value ?? ZeroValue;
 
     public static Ed2kFileId Compute(byte[] data)
     {
@@ -95,7 +96,7 @@ public readonly struct Ed2kFileId : IEquatable<Ed2kFileId>
         }
     }
 
-    public byte[] ToArray() => this.value?.ToArray() ?? new byte[16];
+    public byte[] ToArray() => this.Bytes.ToArray();
 
     public bool Equals(Ed2kFileId other)
     {

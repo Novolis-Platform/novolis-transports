@@ -7,6 +7,7 @@ namespace Novolis.Transports.Kad;
 /// </summary>
 public readonly struct KadId : IEquatable<KadId>
 {
+    private static readonly byte[] ZeroValue = new byte[16];
     private readonly byte[] value;
 
     public KadId(ReadOnlySpan<byte> value)
@@ -16,7 +17,7 @@ public readonly struct KadId : IEquatable<KadId>
         this.value = value.ToArray();
     }
 
-    public ReadOnlySpan<byte> Bytes => this.value ?? [];
+    public ReadOnlySpan<byte> Bytes => this.value ?? ZeroValue;
 
     public static KadId CreateRandom()
     {
@@ -31,7 +32,7 @@ public readonly struct KadId : IEquatable<KadId>
         return new KadId(Convert.FromHexString(text));
     }
 
-    public byte[] ToArray() => this.value?.ToArray() ?? new byte[16];
+    public byte[] ToArray() => this.Bytes.ToArray();
 
     public byte[] Xor(KadId other)
     {

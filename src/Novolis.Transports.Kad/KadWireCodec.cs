@@ -1,5 +1,6 @@
 using System.Buffers.Binary;
 using System.Net;
+using System.Text;
 using Novolis.Transports.Ed2k;
 
 namespace Novolis.Transports.Kad;
@@ -38,6 +39,55 @@ public static class KadWireCodec
         var writer = new KadWriter();
         writer.WriteBytes(fileId.Bytes);
         writer.WriteBytes(requester.Bytes);
+        return writer.ToArray();
+    }
+
+    public static byte[] EncodeNodeRequest(KadId requester, KadId target)
+    {
+        var writer = new KadWriter();
+        writer.WriteByte(0);
+        writer.WriteBytes(target.Bytes);
+        writer.WriteBytes(requester.Bytes);
+        return writer.ToArray();
+    }
+
+    public static IReadOnlyList<KadContact> DecodeNodeResponse(ReadOnlySpan<byte> payload)
+    {
+        var reader = new KadReader(payload);
+        _ = new KadId(reader.ReadBytes(16));
+        var count = reader.ReadByte();
+        return ReadContacts(ref reader, count);
+    }
+
+    public static byte[] EncodeNodeResponse(
+        KadId target,
+        IReadOnlyList<KadContact> contacts)
+    {
+        if (contacts.Count > byte.MaxValue)
+            throw new ArgumentException("A Kad node response supports at most 255 contacts.");
+        var writer = new KadWriter();
+        writer.WriteBytes(target.Bytes);
+        writer.WriteByte(checked((byte)contacts.Count));
+        foreach (var contact in contacts)
+            WriteContact(writer, contact);
+        return writer.ToArray();
+    }
+
+    public static byte[] EncodePublishKeyword(
+        KadId requester,
+        Ed2kFileId fileId,
+        string keyword)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(keyword);
+        var keywordBytes = Encoding.UTF8.GetBytes(keyword);
+        if (keywordBytes.Length > byte.MaxValue)
+            throw new ArgumentException("A Kad keyword is limited to 255 bytes.", nameof(keyword));
+
+        var writer = new KadWriter();
+        writer.WriteBytes(fileId.Bytes);
+        writer.WriteBytes(requester.Bytes);
+        writer.WriteByte(checked((byte)keywordBytes.Length));
+        writer.WriteBytes(keywordBytes);
         return writer.ToArray();
     }
 

@@ -16,18 +16,13 @@ public static class Ed2kSourceExchange
         writer.WriteByte(checked((byte)sources.Count));
         foreach (var source in sources)
         {
-            if (!uint.TryParse(source.Address.Replace(".", string.Empty, StringComparison.Ordinal), out _))
-            {
-                if (!System.Net.IPAddress.TryParse(source.Address, out var parsed))
-                    throw new ArgumentException("Source addresses must be IPv4.", nameof(sources));
-                writer.WriteBytes(parsed.GetAddressBytes());
-            }
-            else
-            {
-                var address = System.Net.IPAddress.Parse(source.Address);
-                writer.WriteBytes(address.GetAddressBytes());
-            }
+            if (!System.Net.IPAddress.TryParse(source.Address, out var address) ||
+                address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
+                throw new ArgumentException("Source addresses must be IPv4.", nameof(sources));
+            if (source.Port is < 1 or > 65535 || source.KadPort is < 0 or > 65535)
+                throw new ArgumentOutOfRangeException(nameof(sources));
 
+            writer.WriteBytes(address.GetAddressBytes());
             writer.WriteUInt16(checked((ushort)source.Port));
             writer.WriteUInt16(checked((ushort)Math.Max(0, source.KadPort)));
         }

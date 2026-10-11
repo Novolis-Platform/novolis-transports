@@ -5,15 +5,6 @@ using System.Text;
 namespace Novolis.Transports.Ed2k;
 
 /// <summary>
-/// Metadata for a server-list entry.
-/// </summary>
-public sealed record Ed2kServerInfo(
-    Ed2kServerEndpoint Endpoint,
-    string? Name = null,
-    uint? UserCount = null,
-    uint? FileCount = null);
-
-/// <summary>
 /// Loads text server lists and the eMule server.met binary format.
 /// </summary>
 public sealed class ServerList
