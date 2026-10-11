@@ -4,6 +4,8 @@
     <Project Path="src/Novolis.Transports.Abstractions/Novolis.Transports.Abstractions.csproj" />
     <Project Path="src/Novolis.Transports.Datagrams/Novolis.Transports.Datagrams.csproj" />
     <Project Path="src/Novolis.Transports.Discovery/Novolis.Transports.Discovery.csproj" />
+    <Project Path="src/Novolis.Transports.Ed2k/Novolis.Transports.Ed2k.csproj" />
+    <Project Path="src/Novolis.Transports.Kad/Novolis.Transports.Kad.csproj" />
     <Project Path="src/Novolis.Transports.Quic/Novolis.Transports.Quic.csproj" />
     <Project Path="src/Novolis.Transports.Tailscale/Novolis.Transports.Tailscale.csproj" />
     <Project Path="src/Novolis.Transports.Tcp.Abstractions/Novolis.Transports.Tcp.Abstractions.csproj" />

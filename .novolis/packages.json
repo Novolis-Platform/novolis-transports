@@ -12,6 +12,14 @@
       "project": "src/Novolis.Transports.Discovery/Novolis.Transports.Discovery.csproj",
       "paths": ["src/Novolis.Transports.Discovery/**", "Novolis.Transports.slnx"]
     },
+    "Novolis.Transports.Ed2k": {
+      "project": "src/Novolis.Transports.Ed2k/Novolis.Transports.Ed2k.csproj",
+      "paths": ["src/Novolis.Transports.Ed2k/**", "Novolis.Transports.slnx"]
+    },
+    "Novolis.Transports.Kad": {
+      "project": "src/Novolis.Transports.Kad/Novolis.Transports.Kad.csproj",
+      "paths": ["src/Novolis.Transports.Kad/**", "Novolis.Transports.slnx"]
+    },
     "Novolis.Transports.Tailscale": {
       "project": "src/Novolis.Transports.Tailscale/Novolis.Transports.Tailscale.csproj",
       "paths": ["src/Novolis.Transports.Tailscale/**", "Novolis.Transports.slnx"]

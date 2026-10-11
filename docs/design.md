@@ -26,6 +26,8 @@ Follow [library-boundaries](https://github.com/Novolis-Platform/novolis-governan
 - `Novolis.Transports.Tcp.Abstractions`
 - `Novolis.Transports.Tcp.Client`
 - `Novolis.Transports.Tcp.Server`
+- `Novolis.Transports.Ed2k`
+- `Novolis.Transports.Kad`
 - `Novolis.Transports.Torrent`
 - `Novolis.Transports.WireFish`
 

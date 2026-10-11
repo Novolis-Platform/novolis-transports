@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Novolis.Transports.Kad</PackageId>
+    <IsPackable>true</IsPackable>
+    <RootNamespace>Novolis.Transports.Kad</RootNamespace>
+    <Description>Clean-room eMule Kad discovery and routing primitives over UDP.</Description>
+    <PackageTags>kad;kademlia;ed2k;emule;amule;p2p;peer-to-peer;transports;novolis</PackageTags>
+    <PackageProjectUrl>https://github.com/Novolis-Platform/novolis-transports</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Novolis-Platform/novolis-transports</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Novolis.Transports.Ed2k\Novolis.Transports.Ed2k.csproj" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

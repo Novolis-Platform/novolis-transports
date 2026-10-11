@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Novolis.Transports.Ed2k</PackageId>
+    <IsPackable>true</IsPackable>
+    <RootNamespace>Novolis.Transports.Ed2k</RootNamespace>
+    <Description>Clean-room eD2k server and peer protocol client with file identifiers, source discovery, and part verification.</Description>
+    <PackageTags>ed2k;emule;amule;p2p;peer-to-peer;transports;novolis</PackageTags>
+    <PackageProjectUrl>https://github.com/Novolis-Platform/novolis-transports</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Novolis-Platform/novolis-transports</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>
