@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  <strong>HTTP, IPC, torrents, and more</strong><br/>
-  Transport libraries: HTTP, local IPC, torrent, and related adapters.
+  <strong>HTTP, IPC, torrents, network paths, and more</strong><br/>
+  Transport libraries: HTTP, local IPC, torrent, network path, and related adapters.
 </p>
 
 <p align="center">
@@ -44,6 +44,7 @@
 | `Novolis.Transports.LocalIpc` | `dotnet add package Novolis.Transports.LocalIpc` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.LocalIpc/README.md) |
 | `Novolis.Transports.Ed2k` | `dotnet add package Novolis.Transports.Ed2k` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Ed2k/README.md) |
 | `Novolis.Transports.Kad` | `dotnet add package Novolis.Transports.Kad` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Kad/README.md) |
+| `Novolis.Transports.NetworkPath` | `dotnet add package Novolis.Transports.NetworkPath` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.NetworkPath/README.md) |
 | `Novolis.Transports.Tcp.Abstractions` | `dotnet add package Novolis.Transports.Tcp.Abstractions` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Abstractions/README.md) |
 | `Novolis.Transports.Tcp.Client` | `dotnet add package Novolis.Transports.Tcp.Client` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Client/README.md) |
 | `Novolis.Transports.Tcp.Server` | `dotnet add package Novolis.Transports.Tcp.Server` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Server/README.md) |
@@ -65,6 +66,7 @@ TCP and HTTP client libraries for the Novolis platform.
 | `Novolis.Transports.Tcp.Server` | TCP server hosting |
 | `Novolis.Transports.WireFish` | Live packet capture (SharpPcap) via `Novolis.Messaging.Channels` |
 | `Novolis.Transports.LocalIpc` | Framed local IPC over named pipes and Unix domain sockets |
+| `Novolis.Transports.NetworkPath` | Cross-platform adapter inventory, egress resolution, and bound TCP probes |
 
 `Novolis.Transports.Tcp.Cryptography` is a legacy internal AES-CBC helper. It is not authenticated
 transport security and must not be used for new or end-to-end protected traffic.

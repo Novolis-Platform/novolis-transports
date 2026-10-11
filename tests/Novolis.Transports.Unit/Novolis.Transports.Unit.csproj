@@ -18,6 +18,7 @@
     <ProjectReference Include="../../src/Novolis.Transports.Quic/Novolis.Transports.Quic.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Torrent/Novolis.Transports.Torrent.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.LocalIpc/Novolis.Transports.LocalIpc.csproj" />
+    <ProjectReference Include="../../src/Novolis.Transports.NetworkPath/Novolis.Transports.NetworkPath.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Tcp.Abstractions/Novolis.Transports.Tcp.Abstractions.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Tcp.Client/Novolis.Transports.Tcp.Client.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Tcp.Server/Novolis.Transports.Tcp.Server.csproj" />

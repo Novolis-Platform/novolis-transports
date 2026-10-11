@@ -28,6 +28,7 @@ Follow [library-boundaries](https://github.com/Novolis-Platform/novolis-governan
 - `Novolis.Transports.Tcp.Server`
 - `Novolis.Transports.Ed2k`
 - `Novolis.Transports.Kad`
+- `Novolis.Transports.NetworkPath`
 - `Novolis.Transports.Torrent`
 - `Novolis.Transports.WireFish`
 
@@ -35,4 +36,5 @@ Follow [library-boundaries](https://github.com/Novolis-Platform/novolis-governan
 
 - `dotnet`
 - `networking`
+- `network-path`
 - `novolis`

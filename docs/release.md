@@ -12,6 +12,7 @@ Published docs: [https://novolis-platform.github.io/.github/novolis-transports/]
 - `Novolis.Transports.Tcp.Abstractions`
 - `Novolis.Transports.Tcp.Client`
 - `Novolis.Transports.Tcp.Server`
+- `Novolis.Transports.NetworkPath`
 - `Novolis.Transports.Torrent`
 - `Novolis.Transports.WireFish`
 
