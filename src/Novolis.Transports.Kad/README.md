@@ -16,6 +16,11 @@ encoding, bootstrap, iterative lookup, and keyword/source publish helpers.
 dotnet add package Novolis.Transports.Kad
 ```
 
+## Quick start
+
+Build a `KadRoutingTable` from the local node identity, then use the
+resulting contacts to drive bootstrap and iterative lookup operations.
+
 `Novolis.Transports.Kad` references `Novolis.Transports.Ed2k` for the shared
 file identifier and tag representations. It does not share the BitTorrent
 DHT implementation in `Novolis.Transports.Torrent`.

@@ -3,6 +3,23 @@
 Cross-platform usable-adapter inventory, route resolution, and explicit bound
 TCP connection probes for .NET applications.
 
+## Install
+
+```bash
+dotnet add package Novolis.Transports.NetworkPath
+```
+
+## Quick start
+
+```csharp
+using Novolis.Transports.NetworkPath;
+
+var request = new NetworkProbeRequest(
+    new NetworkProbeTarget("example.com", 443));
+var report = await new NetworkPathInspector().InspectAsync(request);
+Console.WriteLine(report.SelectedProbe);
+```
+
 The package reports which local source address the operating system selects
 for a destination, classifies adapters with evidence, and can compare
 repeated probes bound to individual adapters. A TCP-connect probe is not an

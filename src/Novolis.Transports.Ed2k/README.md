@@ -41,5 +41,10 @@ security decisions.
 server's result records. Use `ServerList.Load` for a user-supplied text list
 or `server.met` file.
 
+## Quick start
+
+Start with `Ed2kFileId`, `Ed2kLink`, and the server/session types when adding
+eD2k file identity or server discovery to an application.
+
 This package is an independently authored protocol implementation. aMule and
 eMule are GPL reference clients, not dependencies.
