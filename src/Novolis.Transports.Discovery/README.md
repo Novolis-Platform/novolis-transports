@@ -16,7 +16,9 @@ provides:
 <PackageReference Include="Novolis.Transports.Discovery" Version="2026.1.*" />
 ```
 
-## Cohort map
+## Quick start
+
+Create a query and resolve the matching service registrations:
 
 Every registration has a `cohort`, `serviceName`, and `instanceId`. A caller
 can merge multiple sources without making the product protocol part of this
