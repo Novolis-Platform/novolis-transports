@@ -56,18 +56,18 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Gets the number of elements contained in the <see cref="System.Collections.Generic.ICollection`1" />.
+    ///     Gets the number of elements contained in the collection.
     /// </summary>
-    /// <value>The number of elements contained in the <see cref="System.Collections.Generic.ICollection`1" />.</value>
+    /// <value>The number of elements contained in the collection.</value>
     public int Count
     {
         get { return this.list.Count; }
     }
 
     /// <summary>
-    ///     Gets a value indicating whether the <see cref="System.Collections.Generic.ICollection`1" /> is read-only.
+    ///     Gets a value indicating whether the collection is read-only.
     /// </summary>
-    /// <value>true if the <see cref="System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.</value>
+    /// <value>true if the collection is read-only; otherwise, false.</value>
     public bool IsReadOnly
     {
         get { return false; }
@@ -91,9 +91,9 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Adds an item to the <see cref="System.Collections.Generic.ICollection`1" />.
+    ///     Adds an item to the collection.
     /// </summary>
-    /// <param name="item">The object to add to the <see cref="System.Collections.Generic.ICollection`1" />.</param>
+    /// <param name="item">The object to add to the collection.</param>
     public void Add(BEncodedValue item)
     {
         item.CannotBeNull();
@@ -102,7 +102,7 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Removes all items from the <see cref="System.Collections.Generic.ICollection`1" />.
+    ///     Removes all items from the collection.
     /// </summary>
     public void Clear()
     {
@@ -110,11 +110,11 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Determines whether the <see cref="System.Collections.Generic.ICollection`1" /> contains a specific value.
+    ///     Determines whether the collection contains a specific value.
     /// </summary>
-    /// <param name="item">The object to locate in the <see cref="System.Collections.Generic.ICollection`1" />.</param>
+    /// <param name="item">The object to locate in the collection.</param>
     /// <returns>
-    ///     true if <paramref name="item" /> is found in the <see cref="System.Collections.Generic.ICollection`1" />;
+    ///     true if <paramref name="item" /> is found in the collection;
     ///     otherwise, false.
     /// </returns>
     public bool Contains(BEncodedValue item)
@@ -141,7 +141,7 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     ///     Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>
-    ///     A <see cref="System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+    ///     An enumerator that can be used to iterate through the collection.
     /// </returns>
     public IEnumerator<BEncodedValue> GetEnumerator()
     {
@@ -160,9 +160,9 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Determines the index of a specific item in the <see cref="System.Collections.Generic.IList`1" />.
+    ///     Determines the index of a specific item in the list.
     /// </summary>
-    /// <param name="item">The object to locate in the <see cref="System.Collections.Generic.IList`1" />.</param>
+    /// <param name="item">The object to locate in the list.</param>
     /// <returns>
     ///     The index of <paramref name="item" /> if found in the list; otherwise, -1.
     /// </returns>
@@ -174,10 +174,10 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Inserts an item to the <see cref="System.Collections.Generic.IList`1" /> at the specified index.
+    ///     Inserts an item into the list at the specified index.
     /// </summary>
     /// <param name="index">The zero-based index at which <paramref name="item" /> should be inserted.</param>
-    /// <param name="item">The object to insert into the <see cref="System.Collections.Generic.IList`1" />.</param>
+    /// <param name="item">The object to insert into the list.</param>
     public void Insert(int index, BEncodedValue item)
     {
         index.MustBeGreaterThanOrEqualTo(0);
@@ -187,13 +187,13 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Removes the first occurrence of a specific object from the <see cref="System.Collections.Generic.ICollection`1" />.
+    ///     Removes the first occurrence of a specific object from the collection.
     /// </summary>
-    /// <param name="item">The object to remove from the <see cref="System.Collections.Generic.ICollection`1" />.</param>
+    /// <param name="item">The object to remove from the collection.</param>
     /// <returns>
     ///     true if <paramref name="item" /> was successfully removed from the
-    ///     <see cref="System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if
-    ///     <paramref name="item" /> is not found in the original <see cref="System.Collections.Generic.ICollection`1" />.
+    ///     collection; otherwise, false. This method also returns false if <paramref name="item" /> is not found in
+    ///     the original collection.
     /// </returns>
     public bool Remove(BEncodedValue item)
     {
@@ -203,7 +203,7 @@ public class BEncodedList : BEncodedValue, IList<BEncodedValue>, IEnumerable
     }
 
     /// <summary>
-    ///     Removes the <see cref="System.Collections.Generic.IList`1" /> item at the specified index.
+    ///     Removes the list item at the specified index.
     /// </summary>
     /// <param name="index">The zero-based index of the item to remove.</param>
     public void RemoveAt(int index)

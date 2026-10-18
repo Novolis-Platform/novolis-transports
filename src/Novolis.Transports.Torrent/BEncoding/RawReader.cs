@@ -207,7 +207,7 @@ public class RawReader : Stream
     /// </summary>
     /// <param name="offset">A byte offset relative to the <paramref name="origin" /> parameter.</param>
     /// <param name="origin">
-    ///     A value of type <see cref="<see cref="System.IO.SeekOrigin" />" /> indicating the reference point
+    ///     A value of type <see cref="System.IO.SeekOrigin" /> indicating the reference point
     ///     used to obtain the new position.
     /// </param>
     /// <returns>
