@@ -16,6 +16,7 @@ Published docs: [https://novolis-platform.github.io/.github/novolis-transports/]
 
 | Package |
 | --- |
+| `Novolis.Transports.Discovery` |
 | `Novolis.Transports.LocalIpc` |
 | `Novolis.Transports.Tcp.Abstractions` |
 | `Novolis.Transports.Tcp.Client` |

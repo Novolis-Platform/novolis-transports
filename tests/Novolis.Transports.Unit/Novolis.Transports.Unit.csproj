@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/Novolis.Transports.Datagrams/Novolis.Transports.Datagrams.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Abstractions/Novolis.Transports.Abstractions.csproj" />
+    <ProjectReference Include="../../src/Novolis.Transports.Discovery/Novolis.Transports.Discovery.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Ed2k/Novolis.Transports.Ed2k.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Kad/Novolis.Transports.Kad.csproj" />
     <ProjectReference Include="../../src/Novolis.Transports.Tcp/Novolis.Transports.Tcp.csproj" />

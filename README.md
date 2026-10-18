@@ -42,6 +42,7 @@
 | Package | Install | Package README |
 |---------|---------|----------------|
 | `Novolis.Transports.LocalIpc` | `dotnet add package Novolis.Transports.LocalIpc` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.LocalIpc/README.md) |
+| `Novolis.Transports.Discovery` | `dotnet add package Novolis.Transports.Discovery` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Discovery/README.md) |
 | `Novolis.Transports.Ed2k` | `dotnet add package Novolis.Transports.Ed2k` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Ed2k/README.md) |
 | `Novolis.Transports.Kad` | `dotnet add package Novolis.Transports.Kad` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Kad/README.md) |
 | `Novolis.Transports.NetworkPath` | `dotnet add package Novolis.Transports.NetworkPath` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.NetworkPath/README.md) |
@@ -62,6 +63,7 @@ TCP and HTTP client libraries for the Novolis platform.
 
 | Package | Purpose |
 |---------|---------|
+| `Novolis.Transports.Discovery` | Cohort-aware UDP, DNS, and HTTP(S) service discovery |
 | `Novolis.Transports.Tcp.Client` | TCP client |
 | `Novolis.Transports.Tcp.Server` | TCP server hosting |
 | `Novolis.Transports.WireFish` | Live packet capture (SharpPcap) via `Novolis.Messaging.Channels` |

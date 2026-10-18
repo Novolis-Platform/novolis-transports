@@ -2,11 +2,13 @@
   <PropertyGroup>
     <PackageId>Novolis.Transports.Discovery</PackageId>
     <IsPackable>true</IsPackable>
-    <Description>Generic UDP discovery beacon primitives.</Description>
+    <Description>Cohort-aware service discovery over UDP, DNS SRV/TXT, and HTTP(S).</Description>
+    <PackageTags>service-discovery;cohort;dns;srv;txt;http;https;udp;transports;novolis</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
+    <PackageReference Include="DnsClient" />
     <ProjectReference Include="..\Novolis.Transports.Udp\Novolis.Transports.Udp.csproj" />
   </ItemGroup>
 </Project>
