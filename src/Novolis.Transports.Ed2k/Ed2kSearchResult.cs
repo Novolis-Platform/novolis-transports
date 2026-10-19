@@ -10,4 +10,7 @@ public sealed record Ed2kSearchResult(
     string Name,
     long Size,
     string? Type,
-    int SourceCount);
+    int SourceCount,
+    long? SpeedBytesPerSecond = null,
+    int? CompleteSourceCount = null,
+    int? AvailabilityPercent = null);

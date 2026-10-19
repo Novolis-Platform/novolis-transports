@@ -24,7 +24,8 @@ public static class Ed2kProtocol
     public const byte PeerHelloAnswer = 0x4C;
     public const byte PeerFileRequest = 0x58;
     public const byte PeerFileStatus = 0x50;
-    public const byte PeerStartUpload = 0x55;
+    public const byte PeerStartUpload = 0x54;
+    public const byte PeerAcceptUploadReq = 0x55;
     public const byte PeerSendingPart = 0x46;
     public const byte PeerRequestParts = 0x47;
     public const byte PeerHashSetRequest = 0x51;

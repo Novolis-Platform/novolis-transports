@@ -35,8 +35,6 @@ public sealed class Ed2kPeerHost : IAsyncDisposable
     {
         if (data.Length == 0)
             throw new ArgumentException("An eD2k peer share must contain at least one byte.", nameof(data));
-        if (data.Length > Ed2kProtocol.PartSize)
-            throw new NotSupportedException("The loopback peer supports one eD2k part per share.");
         if (Ed2kFileId.Compute(data) != fileId)
             throw new ArgumentException("The file id does not match the shared bytes.", nameof(fileId));
         this.files[fileId] = data.ToArray();
@@ -131,8 +129,18 @@ public sealed class Ed2kPeerHost : IAsyncDisposable
             {
                 var hashSetWriter = new Ed2kBinaryWriter();
                 hashSetWriter.WriteBytes(hashSetFileId.Bytes);
-                hashSetWriter.WriteUInt32(1);
-                hashSetWriter.WriteBytes(Ed2kMd4.Compute(hashSetData));
+                var hashCount = checked((uint)(
+                    ((long)hashSetData.Length + Ed2kProtocol.PartSize - 1)
+                    / Ed2kProtocol.PartSize));
+                hashSetWriter.WriteUInt32(hashCount);
+                for (var offset = 0; offset < hashSetData.Length; offset += Ed2kProtocol.PartSize)
+                {
+                    var length = Math.Min(
+                        Ed2kProtocol.PartSize,
+                        hashSetData.Length - offset);
+                    hashSetWriter.WriteBytes(
+                        Ed2kMd4.Compute(hashSetData.AsSpan(offset, length)));
+                }
                 await stream.WriteAsync(
                         new Ed2kFrame(
                                 Ed2kProtocol.EmuleProtocol,
@@ -155,15 +163,42 @@ public sealed class Ed2kPeerHost : IAsyncDisposable
         if (!this.files.TryGetValue(fileId, out var data))
             return;
 
+        var partRequest = await Ed2kFrameCodec.ReadTcpAsync(stream, cancellationToken)
+            .ConfigureAwait(false);
+        var start = 0;
+        var end = Math.Min(Ed2kProtocol.PartSize, data.Length) - 1;
+        if (partRequest?.Opcode == Ed2kProtocol.PeerRequestParts)
+        {
+            if (partRequest.Payload.Length < 16 + (6 * sizeof(uint)))
+                return;
+            var requestedFileId = new Ed2kFileId(
+                partRequest.Payload.AsSpan(0, 16));
+            if (requestedFileId != fileId)
+                return;
+
+            var partReader = new Ed2kBinaryReader(partRequest.Payload.AsSpan(16));
+            start = checked((int)partReader.ReadUInt32());
+            _ = partReader.ReadUInt32();
+            _ = partReader.ReadUInt32();
+            end = checked((int)partReader.ReadUInt32());
+            if (start < 0
+                || end < start
+                || end >= data.Length
+                || end - start + 1 > Ed2kProtocol.PartSize)
+            {
+                return;
+            }
+        }
+
         this.UploadQueue.Enqueue(peerHash);
         if (!this.UploadQueue.TryTakeNext(DateTimeOffset.UtcNow, out _))
             return;
 
         var partWriter = new Ed2kBinaryWriter();
         partWriter.WriteBytes(fileId.Bytes);
-        partWriter.WriteUInt32(0);
-        partWriter.WriteUInt32(checked((uint)Math.Max(0, data.Length - 1)));
-        partWriter.WriteBytes(data);
+        partWriter.WriteUInt32(checked((uint)start));
+        partWriter.WriteUInt32(checked((uint)end));
+        partWriter.WriteBytes(data.AsSpan(start, end - start + 1));
         await stream.WriteAsync(
                 new Ed2kFrame(
                         Ed2kProtocol.EmuleProtocol,
@@ -173,6 +208,6 @@ public sealed class Ed2kPeerHost : IAsyncDisposable
                 cancellationToken)
             .ConfigureAwait(false);
         await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
-        this.Credits.RecordUpload(peerHash, data.Length);
+        this.Credits.RecordUpload(peerHash, end - start + 1);
     }
 }

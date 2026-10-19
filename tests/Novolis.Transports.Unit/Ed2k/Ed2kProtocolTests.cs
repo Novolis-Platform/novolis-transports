@@ -149,6 +149,41 @@ public sealed class Ed2kProtocolTests
     }
 
     [Test]
+    public async Task Loopback_peer_transfers_multipart_file_and_verifies_file_id()
+    {
+        var data = new byte[Ed2kProtocol.PartSize + 1];
+        data[0] = 0x17;
+        data[Ed2kProtocol.PartSize - 1] = 0x28;
+        data[^1] = 0x39;
+        var fileId = Ed2kFileId.Compute(data);
+        var userHash = Enumerable.Repeat((byte)0x61, 16).ToArray();
+        var destination = Path.Combine(
+            Path.GetTempPath(),
+            $"novolis-ed2k-multipart-{Guid.NewGuid():N}.bin");
+
+        await using var host = new Ed2kPeerHost();
+        host.Share(fileId, data);
+        await host.StartAsync();
+        try
+        {
+            await Ed2kPeerSession.DownloadAsync(
+                host.LocalEndpoint,
+                fileId,
+                data.Length,
+                destination,
+                userHash);
+            var downloaded = await File.ReadAllBytesAsync(destination);
+            await Assert.That(downloaded.SequenceEqual(data)).IsTrue();
+            await Assert.That(host.Credits.GetRecord(userHash).UploadedBytes)
+                .IsEqualTo(data.Length);
+        }
+        finally
+        {
+            File.Delete(destination);
+        }
+    }
+
+    [Test]
     public async Task Session_logs_in_offers_files_and_searches()
     {
         var fileId = Ed2kFileId.Parse("00112233445566778899aabbccddeeff");
@@ -193,7 +228,10 @@ public sealed class Ed2kProtocolTests
             [
                 new Ed2kTag(Ed2kTagIds.Name, "fixture.bin"),
                 new Ed2kTag(Ed2kTagIds.Size, (uint)123),
-                new Ed2kTag(Ed2kTagIds.SourceCount, (uint)4)
+                new Ed2kTag(Ed2kTagIds.SourceCount, (uint)4),
+                new Ed2kTag(Ed2kTagIds.CompleteSourceCount, (uint)2),
+                new Ed2kTag("speed", (2 * 1024 * 1024).ToString()),
+                new Ed2kTag("availability_percent", "75")
             ]));
             await stream.WriteAsync(
                 new Ed2kFrame(
@@ -221,6 +259,10 @@ public sealed class Ed2kProtocolTests
             await Assert.That(results.Count).IsEqualTo(1);
             await Assert.That(results[0].Name).IsEqualTo("fixture.bin");
             await Assert.That(results[0].SourceCount).IsEqualTo(4);
+            await Assert.That(results[0].CompleteSourceCount).IsEqualTo(2);
+            await Assert.That(results[0].SpeedBytesPerSecond)
+                .IsEqualTo(2 * 1024 * 1024);
+            await Assert.That(results[0].AvailabilityPercent).IsEqualTo(75);
         }
         finally
         {
@@ -228,4 +270,5 @@ public sealed class Ed2kProtocolTests
             await serverTask;
         }
     }
+
 }

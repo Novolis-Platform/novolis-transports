@@ -105,6 +105,24 @@ public static class Ed2kMessages
             var size = ReadSize(tags);
             var type = Ed2kTagCodec.Find(tags, Ed2kTagIds.Type)?.StringValue;
             var sourceCount = ReadInt(tags, Ed2kTagIds.SourceCount);
+            var completeSourceCount =
+                ReadOptionalInt(tags, Ed2kTagIds.CompleteSourceCount)
+                ?? ReadNamedInt(
+                    tags,
+                    "complete_sources",
+                    "complete sources",
+                    "complete");
+            var speed = ReadNamedLong(
+                tags,
+                "speed",
+                "speeddown",
+                "transfer_speed",
+                "source_speed");
+            var availability = ReadNamedInt(
+                tags,
+                "availability",
+                "availability_percent",
+                "availabilitypercentage");
             results.Add(new Ed2kSearchResult(
                 fileId,
                 clientId,
@@ -112,7 +130,10 @@ public static class Ed2kMessages
                 string.IsNullOrEmpty(name) ? fileId.ToString() : name,
                 size,
                 type,
-                sourceCount));
+                sourceCount,
+                speed,
+                completeSourceCount,
+                availability));
         }
 
         return results;
@@ -184,13 +205,60 @@ public static class Ed2kMessages
     private static int ReadInt(IReadOnlyList<Ed2kTag> tags, byte id)
     {
         var tag = Ed2kTagCodec.Find(tags, id);
+        return ReadOptionalInt(tag) ?? 0;
+    }
+
+    private static int? ReadOptionalInt(
+        IReadOnlyList<Ed2kTag> tags,
+        byte id) =>
+        ReadOptionalInt(Ed2kTagCodec.Find(tags, id));
+
+    private static int? ReadNamedInt(
+        IReadOnlyList<Ed2kTag> tags,
+        params string[] names)
+    {
+        foreach (var name in names)
+        {
+            var value = ReadOptionalInt(Ed2kTagCodec.Find(tags, name));
+            if (value is not null)
+                return value;
+        }
+
+        return null;
+    }
+
+    private static long? ReadNamedLong(
+        IReadOnlyList<Ed2kTag> tags,
+        params string[] names)
+    {
+        foreach (var name in names)
+        {
+            var value = ReadOptionalLong(Ed2kTagCodec.Find(tags, name));
+            if (value is not null)
+                return value;
+        }
+
+        return null;
+    }
+
+    private static int? ReadOptionalInt(Ed2kTag? tag)
+    {
+        var value = ReadOptionalLong(tag);
+        return value is null ? null : checked((int)value.Value);
+    }
+
+    private static long? ReadOptionalLong(Ed2kTag? tag)
+    {
+        if (tag?.Value is string text)
+            return long.TryParse(text, out var parsed) ? parsed : null;
+
         return tag?.Value switch
         {
             byte value => value,
             ushort value => value,
-            uint value => checked((int)value),
-            ulong value => checked((int)value),
-            _ => 0
+            uint value => value,
+            ulong value => checked((long)value),
+            _ => null
         };
     }
 }

@@ -10,6 +10,7 @@ public static class Ed2kTagIds
     public const byte Type = 0x03;
     public const byte Format = 0x04;
     public const byte SourceCount = 0x15;
+    public const byte CompleteSourceCount = 0x30;
     public const byte ClientVersion = 0x11;
     public const byte ServerFlags = 0x20;
     public const byte EmuleVersion = 0xFB;
