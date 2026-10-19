@@ -14,6 +14,8 @@ Published docs: [https://novolis-platform.github.io/.github/novolis-transports/]
 - `Novolis.Transports.Tcp.Server`
 - `Novolis.Transports.NetworkPath`
 - `Novolis.Transports.Torrent`
+- `Novolis.Transports.Torrent.Search`
+- `Novolis.Transports.Torrent.Trackers`
 - `Novolis.Transports.WireFish`
 
 ## Consumers

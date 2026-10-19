@@ -30,6 +30,8 @@ Follow [library-boundaries](https://github.com/Novolis-Platform/novolis-governan
 - `Novolis.Transports.Kad`
 - `Novolis.Transports.NetworkPath`
 - `Novolis.Transports.Torrent`
+- `Novolis.Transports.Torrent.Search`
+- `Novolis.Transports.Torrent.Trackers`
 - `Novolis.Transports.WireFish`
 
 ## Topics

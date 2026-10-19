@@ -18,6 +18,8 @@
     <Project Path="src/Novolis.Transports.WireFish/Novolis.Transports.WireFish.csproj" />
     <Project Path="src/Novolis.Transports.Tcp/Novolis.Transports.Tcp.csproj" />
     <Project Path="src/Novolis.Transports.Torrent/Novolis.Transports.Torrent.csproj" />
+    <Project Path="src/Novolis.Transports.Torrent.Search/Novolis.Transports.Torrent.Search.csproj" />
+    <Project Path="src/Novolis.Transports.Torrent.Trackers/Novolis.Transports.Torrent.Trackers.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Novolis.Transports.Unit/Novolis.Transports.Unit.csproj" />

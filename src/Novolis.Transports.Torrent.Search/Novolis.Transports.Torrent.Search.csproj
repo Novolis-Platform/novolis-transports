@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Novolis.Transports.Torrent.Search</PackageId>
+    <IsPackable>true</IsPackable>
+    <RootNamespace>Novolis.Transports.Torrent.Search</RootNamespace>
+    <Description>Provider-neutral BitTorrent search with Torznab support and seed, leech, ratio, and availability filters.</Description>
+    <PackageTags>torrent;bittorrent;search;torznab;seeders;leechers;availability;transports;novolis</PackageTags>
+    <PackageProjectUrl>https://github.com/Novolis-Platform/novolis-transports</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Novolis-Platform/novolis-transports</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

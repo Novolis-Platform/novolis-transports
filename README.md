@@ -50,6 +50,8 @@
 | `Novolis.Transports.Tcp.Client` | `dotnet add package Novolis.Transports.Tcp.Client` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Client/README.md) |
 | `Novolis.Transports.Tcp.Server` | `dotnet add package Novolis.Transports.Tcp.Server` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Tcp.Server/README.md) |
 | `Novolis.Transports.Torrent` | `dotnet add package Novolis.Transports.Torrent` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Torrent/README.md) |
+| `Novolis.Transports.Torrent.Search` | `dotnet add package Novolis.Transports.Torrent.Search` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Torrent.Search/README.md) |
+| `Novolis.Transports.Torrent.Trackers` | `dotnet add package Novolis.Transports.Torrent.Trackers` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.Torrent.Trackers/README.md) |
 | `Novolis.Transports.WireFish` | `dotnet add package Novolis.Transports.WireFish` | [README](https://github.com/Novolis-Platform/novolis-transports/blob/main/src/Novolis.Transports.WireFish/README.md) |
 
 For NuGet.org and Visual Studio, the **embedded** README.md inside each package is authoritative.
@@ -69,6 +71,8 @@ TCP and HTTP client libraries for the Novolis platform.
 | `Novolis.Transports.WireFish` | Live packet capture (SharpPcap) via `Novolis.Messaging.Channels` |
 | `Novolis.Transports.LocalIpc` | Framed local IPC over named pipes and Unix domain sockets |
 | `Novolis.Transports.NetworkPath` | Cross-platform adapter inventory, egress resolution, and bound TCP probes |
+| `Novolis.Transports.Torrent.Search` | Provider-neutral torrent search and Torznab filtering |
+| `Novolis.Transports.Torrent.Trackers` | Maintained public tracker-list aggregation |
 
 `Novolis.Transports.Tcp.Cryptography` is a legacy internal AES-CBC helper. It is not authenticated
 transport security and must not be used for new or end-to-end protected traffic.
