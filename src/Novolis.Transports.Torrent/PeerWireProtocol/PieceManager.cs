@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using DefensiveProgrammingFramework;
 using Novolis.Transports.Torrent.PeerWireProtocol.TorrentEventArgs;
@@ -18,6 +19,21 @@ public sealed class PieceManager : IDisposable
     ///     The check out piece index / check out time dictionary.
     /// </summary>
     private readonly Dictionary<int, DateTime> checkouts;
+
+    /// <summary>
+    ///     Pieces requested by a progressive media consumer.
+    /// </summary>
+    private readonly Queue<int> prioritizedPieces;
+
+    /// <summary>
+    ///     Prevents duplicate entries in <see cref="prioritizedPieces" />.
+    /// </summary>
+    private readonly HashSet<int> prioritizedPieceSet;
+
+    /// <summary>
+    ///     Waiters for pieces that are currently arriving from peers.
+    /// </summary>
+    private readonly Dictionary<int, TaskCompletionSource<bool>> pieceWaiters;
 
     /// <summary>
     ///     The checkout timeout.
@@ -97,6 +113,9 @@ public sealed class PieceManager : IDisposable
             : this.presentPiecesCount / (decimal)this.piecesCount;
 
         this.checkouts = new Dictionary<int, DateTime>();
+        this.prioritizedPieces = new Queue<int>();
+        this.prioritizedPieceSet = new HashSet<int>();
+        this.pieceWaiters = new Dictionary<int, TaskCompletionSource<bool>>();
 
         // setup checkout timer
         this.timer = new Timer();
@@ -167,7 +186,7 @@ public sealed class PieceManager : IDisposable
     /// <value>
     ///     <c>true</c> if object is disposed; otherwise, <c>false</c>.
     /// </value>
-    public bool IsDisposed { get; }
+    public bool IsDisposed { get; private set; }
 
     /// <summary>
     ///     Gets a value indicating whether it is end game (only 5% pieces is missing).
@@ -231,6 +250,7 @@ public sealed class PieceManager : IDisposable
     public void Dispose()
     {
         this.CheckIfObjectIsDisposed();
+        this.IsDisposed = true;
 
         if (this.timer != null)
         {
@@ -238,6 +258,16 @@ public sealed class PieceManager : IDisposable
             this.timer.Enabled = false;
             this.timer.Dispose();
             this.timer = null;
+        }
+
+        lock (this.locker)
+        {
+            foreach (var waiter in this.pieceWaiters.Values)
+                waiter.TrySetCanceled();
+
+            this.pieceWaiters.Clear();
+            this.prioritizedPieces.Clear();
+            this.prioritizedPieceSet.Clear();
         }
     }
 
@@ -387,6 +417,86 @@ public sealed class PieceManager : IDisposable
     }
 
     /// <summary>
+    ///     Gives a progressive consumer priority when peers choose a piece.
+    /// </summary>
+    /// <param name="pieceIndex">Index of the piece.</param>
+    public void Prioritize(int pieceIndex)
+    {
+        pieceIndex.MustBeGreaterThanOrEqualTo(0);
+        pieceIndex.MustBeLessThan(this.PieceCount);
+        this.CheckIfObjectIsDisposed();
+
+        lock (this.locker)
+        {
+            if (this.BitField[pieceIndex] == PieceStatus.Present ||
+                this.BitField[pieceIndex] == PieceStatus.Ignore)
+                return;
+
+            if (this.prioritizedPieceSet.Add(pieceIndex))
+                this.prioritizedPieces.Enqueue(pieceIndex);
+        }
+    }
+
+    /// <summary>
+    ///     Selects the next missing piece that a peer can provide.
+    /// </summary>
+    /// <param name="peerBitField">The peer's availability bit field.</param>
+    /// <returns>The selected piece index, or <c>-1</c>.</returns>
+    public int GetNextRequestablePiece(bool[] peerBitField)
+    {
+        peerBitField.CannotBeNull();
+        peerBitField.Length.MustBeEqualTo(this.PieceCount);
+        this.CheckIfObjectIsDisposed();
+
+        lock (this.locker)
+        {
+            foreach (var pieceIndex in this.prioritizedPieces)
+                if (this.BitField[pieceIndex] == PieceStatus.Missing &&
+                    (peerBitField[pieceIndex] || this.IsEndGame))
+                    return pieceIndex;
+
+            for (var pieceIndex = 0; pieceIndex < this.BitField.Length; pieceIndex++)
+                if (this.BitField[pieceIndex] == PieceStatus.Missing &&
+                    (peerBitField[pieceIndex] || this.IsEndGame))
+                    return pieceIndex;
+        }
+
+        return -1;
+    }
+
+    /// <summary>
+    ///     Waits until a piece is present.
+    /// </summary>
+    /// <param name="pieceIndex">Index of the piece.</param>
+    /// <param name="cancellationToken">Cancellation requested by the reader.</param>
+    public Task WaitForPieceAsync(
+        int pieceIndex,
+        CancellationToken cancellationToken = default)
+    {
+        pieceIndex.MustBeGreaterThanOrEqualTo(0);
+        pieceIndex.MustBeLessThan(this.PieceCount);
+        this.CheckIfObjectIsDisposed();
+
+        TaskCompletionSource<bool> waiter;
+        lock (this.locker)
+        {
+            if (this.BitField[pieceIndex] == PieceStatus.Present)
+                return Task.CompletedTask;
+
+            if (!this.pieceWaiters.TryGetValue(pieceIndex, out waiter))
+            {
+                waiter = new TaskCompletionSource<bool>(
+                    TaskCreationOptions.RunContinuationsAsynchronously);
+                this.pieceWaiters.Add(pieceIndex, waiter);
+            }
+        }
+
+        return cancellationToken.CanBeCanceled
+            ? waiter.Task.WaitAsync(cancellationToken)
+            : waiter.Task;
+    }
+
+    /// <summary>
     ///     Gets the length of the piece in bytes.
     /// </summary>
     /// <param name="pieceIndex">Index of the piece.</param>
@@ -449,6 +559,7 @@ public sealed class PieceManager : IDisposable
     /// <param name="e">The <see cref="PieceCompletedEventArgs" /> instance containing the event data.</param>
     private void Piece_Completed(object sender, PieceCompletedEventArgs e)
     {
+        TaskCompletionSource<bool> waiter = null;
         lock (this.locker)
         {
             // only pieces not yet downloaded can be checked in
@@ -461,10 +572,14 @@ public sealed class PieceManager : IDisposable
                 this.CompletedPercentage = this.presentPiecesCount / (decimal)this.piecesCount;
 
                 if (this.checkouts.ContainsKey(e.PieceIndex)) this.checkouts.Remove(e.PieceIndex);
+                this.pieceWaiters.TryGetValue(e.PieceIndex, out waiter);
+                this.pieceWaiters.Remove(e.PieceIndex);
 
                 this.OnPieceCompleted(this, new PieceCompletedEventArgs(e.PieceIndex, e.PieceData));
             }
         }
+
+        waiter?.TrySetResult(true);
     }
 
     /// <summary>

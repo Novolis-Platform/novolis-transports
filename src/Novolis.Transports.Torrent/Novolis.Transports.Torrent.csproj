@@ -19,5 +19,8 @@
     -->
     <NoWarn>$(NoWarn);CS1591;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;CS8765;CS8767</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <LibraryReference Include="Novolis.Video.Abstractions" />
+  </ItemGroup>
   <!-- No third-party deps: legacy DefensiveProgrammingFramework replaced by Internal/DefensiveCompat.cs -->
 </Project>

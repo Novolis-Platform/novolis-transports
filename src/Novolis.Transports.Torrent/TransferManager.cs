@@ -15,6 +15,7 @@ using Novolis.Transports.Torrent.TrackerProtocol.Http;
 using Novolis.Transports.Torrent.TrackerProtocol.TorrentEventArgs;
 using Novolis.Transports.Torrent.TrackerProtocol.Udp;
 using Novolis.Transports.Torrent.TrackerProtocol.Udp.Messages;
+using Novolis.Video;
 
 namespace Novolis.Transports.Torrent;
 
@@ -466,6 +467,39 @@ public sealed class TransferManager : IDisposable
 
         this.pieceManager.Dispose();
         this.pieceManager = null;
+    }
+
+    /// <summary>
+    /// Creates a progressive media source for one active torrent file.
+    /// </summary>
+    /// <param name="file">The torrent file to expose.</param>
+    /// <returns>A source that waits for verified pieces and prioritizes reads.</returns>
+    public IProgressiveByteSource CreateProgressiveByteSource(TorrentFileInfo file)
+    {
+        file.CannotBeNull();
+        this.CheckIfObjectIsDisposed();
+        if (this.pieceManager is null)
+            throw new InvalidOperationException("The torrent must be started first.");
+        if (!file.Download)
+            throw new InvalidOperationException("The selected file is not enabled for download.");
+
+        long offset = 0;
+        foreach (var candidate in this.TorrentInfo.Files)
+        {
+            if (ReferenceEquals(candidate, file) ||
+                string.Equals(candidate.FilePath, file.FilePath, StringComparison.Ordinal))
+            {
+                return new TorrentProgressiveByteSource(
+                    this.persistenceManager,
+                    this.pieceManager,
+                    offset,
+                    file.Length);
+            }
+
+            offset += candidate.Length;
+        }
+
+        throw new ArgumentException("The file does not belong to this torrent.", nameof(file));
     }
 
     /// <summary>

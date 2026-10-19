@@ -474,30 +474,23 @@ public sealed class Peer : IDisposable
                     {
                         if (piece == null)
                         {
-                            // find a missing piece
-                            for (var pieceIndex = 0; pieceIndex < this.BitField.Length; pieceIndex++)
-                                if (this.pieceManager.BitField[pieceIndex] == PieceStatus.Missing)
-                                    if (this.BitField[pieceIndex] ||
-                                        this.pieceManager.IsEndGame)
-                                    {
-                                        pieceData = pieceData.Length == this.pieceManager.GetPieceLength(pieceIndex)
-                                            ? pieceData
-                                            : new byte[this.pieceManager.GetPieceLength(pieceIndex)];
-                                        bitFieldData =
-                                            bitFieldData.Length == this.pieceManager.GetBlockCount(pieceIndex)
-                                                ? bitFieldData
-                                                : new bool[this.pieceManager.GetBlockCount(pieceIndex)];
+                            // Prefer the ranges requested by a progressive media consumer.
+                            var pieceIndex = this.pieceManager.GetNextRequestablePiece(this.BitField);
+                            if (pieceIndex >= 0)
+                            {
+                                pieceData = pieceData.Length == this.pieceManager.GetPieceLength(pieceIndex)
+                                    ? pieceData
+                                    : new byte[this.pieceManager.GetPieceLength(pieceIndex)];
+                                bitFieldData =
+                                    bitFieldData.Length == this.pieceManager.GetBlockCount(pieceIndex)
+                                        ? bitFieldData
+                                        : new bool[this.pieceManager.GetBlockCount(pieceIndex)];
 
-                                        // check it out
-                                        piece = this.pieceManager.CheckOut(pieceIndex, pieceData, bitFieldData);
-
-                                        if (piece != null)
-                                        {
-                                            this.communicator.PieceData = pieceData;
-
-                                            break;
-                                        }
-                                    }
+                                // check it out
+                                piece = this.pieceManager.CheckOut(pieceIndex, pieceData, bitFieldData);
+                                if (piece != null)
+                                    this.communicator.PieceData = pieceData;
+                            }
 
                             if (piece != null)
                                 // request blocks from the missing piece
