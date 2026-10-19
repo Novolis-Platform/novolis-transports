@@ -24,7 +24,7 @@ public sealed class Ed2kPeerSession
         if (expectedSize is < 0 or > Ed2kProtocol.PartSize)
             throw new NotSupportedException("The first peer client supports one eD2k part per transfer.");
 
-        using var client = new TcpClient { NoDelay = true };
+        using var client = new TcpClient(endpoint.AddressFamily) { NoDelay = true };
         await client.ConnectAsync(endpoint.Address, endpoint.Port, cancellationToken)
             .ConfigureAwait(false);
         await using var stream = client.GetStream();

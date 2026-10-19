@@ -41,7 +41,7 @@ public sealed class Ed2kSession : IAsyncDisposable, IDisposable
             throw new ArgumentOutOfRangeException(nameof(endpoint));
 
         await this.DisposeServerAsync().ConfigureAwait(false);
-        var client = new TcpClient
+        var client = new TcpClient(AddressFamily.InterNetwork)
         {
             NoDelay = true
         };
