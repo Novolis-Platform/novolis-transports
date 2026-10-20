@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.IO.Pipes;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace Novolis.Transports.LocalIpc;
 
@@ -61,18 +63,50 @@ public static class LocalIpcTransport
 
         public async ValueTask<ILocalIpcConnection> AcceptAsync(CancellationToken cancellationToken = default)
         {
-            var server = new NamedPipeServerStream(
-                _endpoint.Address,
-                PipeDirection.InOut,
-                NamedPipeServerStream.MaxAllowedServerInstances,
-                PipeTransmissionMode.Byte,
-                PipeOptions.Asynchronous);
+            var server = CreateServer();
 
             await server.WaitForConnectionAsync(cancellationToken).ConfigureAwait(false);
             return new LocalIpcConnection(server);
         }
 
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+
+        private NamedPipeServerStream CreateServer()
+        {
+            if (!_endpoint.AllowAuthenticatedUsers || !OperatingSystem.IsWindows())
+            {
+                return new NamedPipeServerStream(
+                    _endpoint.Address,
+                    PipeDirection.InOut,
+                    NamedPipeServerStream.MaxAllowedServerInstances,
+                    PipeTransmissionMode.Byte,
+                    PipeOptions.Asynchronous);
+            }
+
+            var security = new PipeSecurity();
+            security.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null),
+                PipeAccessRights.FullControl,
+                AccessControlType.Allow));
+            security.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null),
+                PipeAccessRights.FullControl,
+                AccessControlType.Allow));
+            security.AddAccessRule(new PipeAccessRule(
+                new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null),
+                PipeAccessRights.ReadWrite,
+                AccessControlType.Allow));
+
+            return NamedPipeServerStreamAcl.Create(
+                _endpoint.Address,
+                PipeDirection.InOut,
+                NamedPipeServerStream.MaxAllowedServerInstances,
+                PipeTransmissionMode.Byte,
+                PipeOptions.Asynchronous,
+                0,
+                0,
+                security);
+        }
     }
 
     private sealed class UnixDomainSocketListener : ILocalIpcListener

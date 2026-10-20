@@ -22,4 +22,23 @@ public sealed class LocalIpcTransportTests
         await using var secondClientConnection = await LocalIpcTransport.CreateClient().ConnectAsync(endpoint);
         await using var secondServerConnection = await secondAcceptTask;
     }
+
+    [Test]
+    public async Task NamedPipe_listener_can_allow_authenticated_interactive_users()
+    {
+        if (!OperatingSystem.IsWindows())
+            return;
+
+        var pipeName = $"novolis-test-{Guid.NewGuid():N}";
+        var endpoint = new LocalIpcEndpoint(
+            pipeName,
+            LocalIpcTransportKind.NamedPipe,
+            AllowAuthenticatedUsers: true);
+        await using var listener = LocalIpcTransport.CreateListener(endpoint);
+
+        var acceptTask = listener.AcceptAsync();
+        await using var clientConnection = await LocalIpcTransport.CreateClient()
+            .ConnectAsync(endpoint);
+        await using var serverConnection = await acceptTask;
+    }
 }

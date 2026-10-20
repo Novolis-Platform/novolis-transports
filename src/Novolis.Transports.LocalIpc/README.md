@@ -70,7 +70,7 @@ Each frame on the wire: **4-byte little-endian length** + binary body:
 | Type | Role |
 |------|------|
 | `LocalIpcTransport` | `CreateClient()`, `CreateListener(endpoint)` |
-| `LocalIpcEndpoint` | `(Address, Kind)` — pipe name or socket path |
+| `LocalIpcEndpoint` | `(Address, Kind, AllowAuthenticatedUsers)` — pipe name or socket path; the optional Windows flag grants authenticated interactive users duplex access to a service-created pipe |
 | `LocalIpcTransportKind` | `Auto`, `NamedPipe`, `UnixDomainSocket` |
 | `LocalIpcFrame` | `(Sequence, Kind, Name, Payload)` |
 | `LocalIpcFrameCodec` | Stream read/write helpers |
