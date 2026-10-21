@@ -99,6 +99,55 @@ public sealed class TorrentSearchTests
         await Assert.That(results[0].CompletedDownloads).IsEqualTo(99);
     }
 
+    [Test]
+    public async Task Magnetz_provider_normalizes_public_json_results()
+    {
+        var handler = new JsonHandler(
+            """
+            {
+              "data": [
+                {
+                  "sqid": "fixture",
+                  "name": "Ubuntu fixture",
+                  "info_hash": "0123456789abcdef0123456789abcdef01234567",
+                  "size": 123456,
+                  "magnet_link": "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=Ubuntu%20fixture",
+                  "seeders": 12,
+                  "leechers": 3,
+                  "health": 0.85,
+                  "score": 0.92,
+                  "is_verified": true,
+                  "created_at": "2026-10-20T00:00:00Z",
+                  "web_url": "https://magnetz.eu/magnet/fixture"
+                }
+              ]
+            }
+            """);
+        using var http = new HttpClient(handler);
+        var provider = new MagnetzSearchProvider(http);
+
+        var results = await provider.SearchAsync(
+            new TorrentSearchQuery("ubuntu")
+            {
+                MinimumSeeders = 10,
+                MinimumRatio = 4m,
+                MinimumAvailability = 0.8m,
+                Limit = 25,
+            });
+
+        await Assert.That(handler.LastRequestUri?.Query)
+            .Contains("query=ubuntu");
+        await Assert.That(results.Count).IsEqualTo(1);
+        await Assert.That(results[0].InfoHash)
+            .IsEqualTo("0123456789abcdef0123456789abcdef01234567");
+        await Assert.That(results[0].Seeders).IsEqualTo(12);
+        await Assert.That(results[0].Leechers).IsEqualTo(3);
+        await Assert.That(results[0].EffectiveRatio).IsEqualTo(4m);
+        await Assert.That(results[0].Availability).IsEqualTo(0.85m);
+        await Assert.That(results[0].Attributes.ContainsKey("score"))
+            .IsTrue();
+    }
+
     private sealed class XmlHandler(string xml) : HttpMessageHandler
     {
         public Uri? LastRequestUri { get; private set; }
@@ -115,6 +164,26 @@ public sealed class TorrentSearchTests
                         xml,
                         Encoding.UTF8,
                         "application/xml"),
+                });
+        }
+    }
+
+    private sealed class JsonHandler(string json) : HttpMessageHandler
+    {
+        public Uri? LastRequestUri { get; private set; }
+
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
+        {
+            this.LastRequestUri = request.RequestUri;
+            return Task.FromResult(
+                new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(
+                        json,
+                        Encoding.UTF8,
+                        "application/json"),
                 });
         }
     }

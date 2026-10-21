@@ -6,8 +6,9 @@
 
 # Novolis.Transports.Torrent.Search
 
-Provider-neutral torrent search contracts and a Torznab adapter. Torznab lets
-the application select and configure its own indexer or indexer aggregator
+Provider-neutral torrent search contracts with public Magnetz and Torznab
+adapters. Magnetz supplies no-auth public metadata search. Torznab lets the
+application select and configure its own indexer or indexer aggregator
 (such as Jackett or Prowlarr) without coupling this library to a search-site
 catalogue.
 
@@ -25,6 +26,19 @@ dotnet add package Novolis.Transports.Torrent.Search
 ```
 
 ## Quick start
+
+For public metadata search:
+
+```csharp
+using Novolis.Transports.Torrent.Search;
+
+using var http = new HttpClient();
+var provider = new MagnetzSearchProvider(http);
+var search = new TorrentSearchClient(provider);
+var results = await search.SearchAsync(new TorrentSearchQuery("ubuntu"));
+```
+
+For a caller-configured Torznab endpoint:
 
 ```csharp
 using Novolis.Transports.Torrent.Search;
